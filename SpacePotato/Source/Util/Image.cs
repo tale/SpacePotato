@@ -18,20 +18,21 @@ namespace SpacePotato.Source.Util {
                 _dimensions.X = width;
                 _dimensions.Y = height;
 
-                this._texture = texture;
+                _texture = texture;
             }
             public void Draw(SpriteBatch spriteBatch, int scaler = 1) {
                 
-                    spriteBatch.Draw(_texture, new Rectangle(
-                        (int)((_position.X - _dimensions.X / 2 + Camera.Position.X / scaler)),
-                        (int)((_position.Y - _dimensions.Y / 2 + Camera.Position.Y / scaler)),
-                        (int)(_dimensions.X),
-                        (int)(_dimensions.Y)), Color.White);
+                int moveScalar = (scaler == 2) ? 3 : 2;
+                spriteBatch.Draw(_texture, new Rectangle(
+                    (int)(_position.X - _dimensions.X / 2 + Camera.Position.X / moveScalar),
+                    (int)(_position.Y - _dimensions.Y / 2 + Camera.Position.Y / moveScalar),
+                    (int)(_dimensions.X), (int)(_dimensions.Y)), scalarToTint(scaler));
             }
 
             public static Color scalarToTint(int scalar) {
 
-                //if (scalar == 2) return Color.Lerp();
+                if (scalar == 2) return Color.Lerp(Color.White, Color.Black, 0.2F);
+                if (scalar == 3) return Color.Lerp(Color.White, Color.Black, 0.4F);
                 
                 return Color.White;
             }
