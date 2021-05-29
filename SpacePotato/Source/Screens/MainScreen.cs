@@ -57,7 +57,7 @@ namespace SpacePotato {
             if (_player.dead) _player = CreatePlayer();
             
             _player.Update(deltaTime, keys, mouse);
-            _camera.Position = _player.pos - _camera.Origin;
+            Camera.Position = _player.pos - _camera.Origin;
 
 
             if (keys.pressed(Keys.O)) {
