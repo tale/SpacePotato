@@ -1,5 +1,4 @@
-﻿using SpacePotato.Renderer;
-using SpacePotato.Screens;
+﻿
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,7 +13,7 @@ namespace SpacePotato {
 
         public SpacePotatoGame(Options options) {
             _graphics = new GraphicsDeviceManager(this);
-            _screenManager = new ScreenManager(this, 1);
+            _screenManager = new ScreenManager(this, -1);
             
             _options = options;
 
