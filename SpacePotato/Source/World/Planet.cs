@@ -6,7 +6,7 @@ using SpacePotato.Source.Util;
 namespace SpacePotato {
     public class Planet {
         
-        private const float GravityStrengthModifier = .015f, GravityFalloffModifier = .0083f;
+        private const float GravityStrengthModifier = .065f, GravityFalloffModifier = .0083f;
 
         private float _planetMass = 10000;
 
