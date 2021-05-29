@@ -7,21 +7,22 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SpacePotato {
     public class MainScreen : GameScreen {
-        
-        
+        private static Player _player;
+        public static void RecreatePlayer() {
+            _player = new Player(new Vector2(0, 0));
+        }
+
         // basic stuff
         public static Camera Camera { get; set; }
-        
+
         // input
         public static MouseInfo CurrentMouse { get; set; }
         public static KeyInfo CurrentKeys { get; set; }
-        
+
         // settings and booleans
         public static bool EditMode { get; set; }
 
         // objects
-        private static Player _player;
-        
         private static Level[] _levels;
         public static Level level => _levels[_currLevel];
 
@@ -31,19 +32,16 @@ namespace SpacePotato {
         public MainScreen(Game game, int screenId) : base(game, screenId) {
 
             Camera = new Camera(SpacePotatoGame.getGraphicsDevice().Viewport);
-            _player = CreatePlayer();
+
+            RecreatePlayer();
 
             var level1Planets = Enumerable.Range(0, 50).
-                Select(i => new Planet(new Vector2(Util.random(-100, 5900), 
+                Select(i => new Planet(new Vector2(Util.random(-100, 5900),
                     Util.random(-1000, 1000)), 100)).ToList();
 
             _levels = new[] {
                 new Level(level1Planets, new Rectangle(-100, -1000, 6000, 2000), 1),
             };
-        }
-
-        public Player CreatePlayer() {
-            return new Player(new Vector2(0, 0));
         }
 
         private static float Delta(GameTime gameTime) {
@@ -53,20 +51,15 @@ namespace SpacePotato {
         public static List<Planet> GetPlanets() {
             return level.Planets;
         }
-        
+
         public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
             float deltaTime = Delta(gameTime);
             CurrentKeys = keys;
             CurrentMouse = mouse;
 
             // update code
-            _player.fullGrav(level.Planets);
-            
-            if (_player.dead) _player = CreatePlayer();
-            
             _player.Update(deltaTime, keys, mouse);
             Camera.Position = _player.pos - Camera.Origin;
-
 
 
             if (keys.pressed(Keys.O)) {
@@ -94,12 +87,12 @@ namespace SpacePotato {
                 BlendState.NonPremultiplied,
                 SamplerState.PointClamp,
                 transformMatrix: Camera.CalculateViewMatrix());
-            
+
             // rendering code
             _player.Draw(spriteBatch);
 
             _levels[0].Draw(gameTime, spriteBatch);
-            
+
             // end
             spriteBatch.End();
         }
