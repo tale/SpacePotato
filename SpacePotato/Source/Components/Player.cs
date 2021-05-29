@@ -10,6 +10,8 @@ using SpacePotato.Source.Util;
 
 namespace SpacePotato {
     public class Player {
+
+        private static Texture2D heart, deadHeart;
         public Texture2D texture;
         public Vector2 pos, vel, dimen;
         public float rot, scale;
@@ -24,6 +26,8 @@ namespace SpacePotato {
 
         public Player(Vector2 pos) {
             texture = Loader.texture("Common/image");
+            heart = Loader.texture("Common/PotatoHeart");
+            deadHeart = Loader.texture("Common/PotatoHeartGone");
             rot = 0F;
 
             this.pos = pos;
@@ -126,6 +130,14 @@ namespace SpacePotato {
 
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - dimen.X / 2F), (int)(pos.Y - dimen.Y / 2F), (int)dimen.X, (int)dimen.Y), Color.White);
 
+            for (int h = 0; h < 3; h++) {
+
+                Texture2D tempTexture = h < _health ? heart : deadHeart;
+                spriteBatch.Draw(tempTexture, new Rectangle(-530 + h * 100 + (int)Camera.Position.X, 
+                    -280 + (int)Camera.Position.Y, 64, 64), Color.White);
+
+            }
+            
             if (MainScreen.EditMode) {
 
                 Rectangle rect = Util.center(Util.toWorld(MainScreen.CurrentMouse.pos),
