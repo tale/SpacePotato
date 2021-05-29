@@ -17,7 +17,8 @@ namespace SpacePotato {
         private Grapple _grapple;
 
         private short _health = 3;
-        private float _invincibilityTime = 1.5f;
+        private float _invincibilityTime;
+        private const float maxInvincibilityTime = 0.1F;
 
         public Vector2 lastGrav;
 
@@ -29,13 +30,14 @@ namespace SpacePotato {
             dimen = new Vector2(50, 50);
         }
 
-        public void CollideWithPlanet(float deltaTime) {
-            vel = new Vector2(-vel.X * 0.5f, -vel.Y * 0.5f); // TODO: Calculate velocity
+        public void CollideWithPlanet(float deltaTime, Planet planet) {
+            float velMag = Util.mag(vel);
+            vel = Util.polar(Math.Max(velMag * 0.5F, 300), Util.angle(pos - planet.pos));
 
             if (_invincibilityTime < 0) {
                 _health--;
                 _grapple = null;
-                _invincibilityTime = 1.0f;
+                _invincibilityTime = maxInvincibilityTime;
 
                 if (_health == 0) {
                     _health = 3;
@@ -56,6 +58,8 @@ namespace SpacePotato {
 
         public void Update(float deltaTime, KeyInfo keys, MouseInfo mouse) {
 
+            _invincibilityTime -= deltaTime;
+            
             float speed = (MainScreen.EditMode) ? 1400 : 700;
             if (keys.down(Keys.A)) pos += deltaTime * Vector2.UnitX * -speed;
             if (keys.down(Keys.D)) pos += deltaTime * Vector2.UnitX * speed;
@@ -95,7 +99,7 @@ namespace SpacePotato {
 
                 foreach (var planet in nearPlanets) {
                     if (Collision.rectCircle(pos, dimen/2, planet.pos, planet.radius)) { // TODO: un-scuff collision
-                        CollideWithPlanet(deltaTime);
+                        CollideWithPlanet(deltaTime, planet);
                     }
                 }
 
