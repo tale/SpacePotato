@@ -1,4 +1,5 @@
 using System;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SpacePotato.Source.Util;
@@ -10,11 +11,14 @@ namespace SpacePotato {
 
         private const float _planetMass = 10000;
 
+        [XmlIgnore]
         public Texture2D texture;
 
-        public Vector2 pos;
-        public float radius, mass, angle;
-        public int typeIndex;
+        public Vector2 pos { get; set; }
+        public float radius { get; set; }
+        public float mass { get; set; }
+        public float angle { get; set; }
+        public int typeIndex { get; set; }
 
         public float Diameter => radius * 2;
 
@@ -40,11 +44,20 @@ namespace SpacePotato {
 
             this.mass = mass;
             this.angle = angle;
-            
-            texture = textures[Util.randInt(6)];
+
+            typeIndex = Util.randInt(6);
+            texture = textures[typeIndex];
         }
-        
-        public void Tick() {
+
+        public Planet() {}
+
+        public void setUpSerialized() {
+            texture = textures[typeIndex];
+        }
+
+
+
+        public void Update(float deltaTime) {
             //does nothing
 
         }

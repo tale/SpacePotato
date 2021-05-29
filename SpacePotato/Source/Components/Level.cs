@@ -10,6 +10,14 @@ namespace SpacePotato {
         public Rectangle Bounds { get; set; }
         public int LevelID { get; set; }
 
+        public Level() {}
+
+        public void setUpSerialized() {
+            foreach (var planet in Planets) {
+                planet.setUpSerialized();
+            }
+        }
+
         public Level(List<Planet> planets, Rectangle bounds, int levelID) {
             this.Planets = planets;
             this.Bounds = bounds;
