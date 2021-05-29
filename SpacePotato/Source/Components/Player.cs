@@ -48,7 +48,7 @@ namespace SpacePotato {
             pos += vel * deltaTime;
 
             foreach (var planet in nearPlanets) {
-                if (Collision.rectCircle(pos, dimen, planet.pos, planet.radius)) { // TODO: un-scuff collision
+                if (Collision.rectCircle(pos, dimen/2, planet.pos, planet.radius)) { // TODO: un-scuff collision
                     pos = Vector2.Zero;
                     vel = Vector2.Zero;
                 }
@@ -62,17 +62,17 @@ namespace SpacePotato {
 
             grapple?.Update(deltaTime);
             if (grapple != null && grapple.hit) {
-                vel += Util.polar(500, Util.angle(grapple.pos - pos)) * deltaTime;
+                vel += Util.polar(1000, Util.angle(grapple.pos - pos)) * deltaTime;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch) {
             
             //spriteBatch.Draw(texture, pos, null, Color.White, rot, new Vector2(texture.Width / 2F, texture.Height / 2F), scale, SpriteEffects.None, 0);
+
+            grapple?.Draw(spriteBatch);
             
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - dimen.X / 2F), (int)(pos.Y - dimen.Y / 2F), (int)dimen.X, (int)dimen.Y), Color.White);
-            
-            grapple?.Draw(spriteBatch);
         }
     }
 }

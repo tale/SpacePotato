@@ -11,7 +11,7 @@ namespace SpacePotato {
         public bool hit;
 
         public Grapple(Vector2 pos, Vector2 vel) {
-            texture = Loader.texture("Common/image");
+            texture = Loader.texture("Common/mars_planet");
             
             radius = 10;
             this.pos = pos;
@@ -34,9 +34,10 @@ namespace SpacePotato {
         }
 
         public void Draw(SpriteBatch spriteBatch) {
+            RenderUtil.drawLineScreen(pos, player.pos, spriteBatch, Color.White, 3);
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - radius), (int)(pos.Y - radius), (int) (radius * 2), (int) (radius * 2)), Color.White);
-            
-            Vector2 diff = pos - player.pos;
+
+            /*Vector2 diff = pos - player.pos;
             float chainAngle = Util.angle(diff);
             Vector2 chainSize = new Vector2(5, 9) / 8F;
 
@@ -46,7 +47,7 @@ namespace SpacePotato {
                 //Util.render(chain, pos - step * i, chainSize, chainAngle + (float) Math.PI / 2, camera, spriteBatch);
                 Vector2 thisPos = pos - step * i;
                 spriteBatch.Draw(texture, new Rectangle((int)(thisPos.X - radius), (int)(thisPos.Y - radius), (int) (radius * 2), (int) (radius * 2)), Color.White);
-            }
+            }*/
         }
     }
 }

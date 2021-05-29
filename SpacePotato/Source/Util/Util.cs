@@ -153,6 +153,10 @@ namespace SpacePotato {
 
             return spaced.ToString();
         }
+        
+        public static (float, float) magAngle(Vector2 vec) {
+            return (mag(vec), angle(vec));
+        }
 
         // FROM: https://stackoverflow.com/questions/8928464/for-an-object-can-i-get-all-its-subclasses-using-reflection-or-other-ways
         public static IEnumerable<Type> subClassesOf(Type super) {

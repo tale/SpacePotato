@@ -51,10 +51,10 @@ namespace SpacePotato {
             
             // rendering code
             
-            player.Draw(spriteBatch);
             foreach (var planet in planets) {
                 planet.Draw(spriteBatch);
             }
+            player.Draw(spriteBatch);
 
             spriteBatch.Draw(testTexture, new Rectangle(500, 700, 100, 100), Color.White);
             
