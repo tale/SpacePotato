@@ -13,6 +13,7 @@ namespace SpacePotato {
         public static SpacePotatoGame instance;
         
         public KeyboardState lastKeyboardState;
+        public MouseState lastMouseState;
 
         public SpacePotatoGame(Options options) {
             _graphics = new GraphicsDeviceManager(this);
@@ -66,8 +67,13 @@ namespace SpacePotato {
             KeyboardState keyState = Keyboard.GetState();
             KeyInfo keys = new KeyInfo(keyState, lastKeyboardState);
             lastKeyboardState = keyState;
+            
+            // mouse input
+            MouseState mouseState = Mouse.GetState();
+            MouseInfo mouse = new MouseInfo(mouseState, lastMouseState);
+            lastMouseState = mouseState;
 
-            _screenManager.Update(gameTime, keys);
+            _screenManager.Update(gameTime, keys, mouse);
             base.Update(gameTime);
         }
 

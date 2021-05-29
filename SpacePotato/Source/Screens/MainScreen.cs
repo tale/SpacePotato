@@ -33,12 +33,12 @@ namespace SpacePotato {
             return (float) gameTime.ElapsedGameTime.TotalSeconds;
         }
         
-        public override void Update(GameTime gameTime, KeyInfo keys) {
+        public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
             float deltaTime = delta(gameTime);
 
             // update code
 
-            player.Update(deltaTime, keys);
+            player.Update(deltaTime, keys, mouse);
             camera.Position = player.pos - camera.Origin;
         }
 

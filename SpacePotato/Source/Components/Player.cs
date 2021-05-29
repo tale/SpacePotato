@@ -13,8 +13,10 @@ namespace SpacePotato {
         public Vector2 pos, vel, dimen;
         public float rot, scale;
 
+        public Grapple grapple;
+
         public Player(Vector2 pos) {
-            texture = Loader.texture("Common/spinner");
+            texture = Loader.texture("Common/image");
             rot = 0F;
 
             this.pos = pos;
@@ -32,7 +34,7 @@ namespace SpacePotato {
             return grav;
         }
 
-        public void Update(float deltaTime, KeyInfo keys) {
+        public void Update(float deltaTime, KeyInfo keys, MouseInfo mouse) {
 
             const float speed = 700;
             if (keys.down(Keys.A)) pos += deltaTime * Vector2.UnitX * -speed;
@@ -51,6 +53,17 @@ namespace SpacePotato {
                     vel = Vector2.Zero;
                 }
             }
+
+            if (mouse.leftPressed) {
+                float angle = Util.angle(mouse.pos - Camera.screenCenter);
+                grapple = new Grapple(pos, Util.polar(3000, angle)) {player = this};
+            }
+            if (mouse.leftUnpressed) grapple = null;
+
+            grapple?.Update(deltaTime);
+            if (grapple != null && grapple.hit) {
+                vel += Util.polar(500, Util.angle(grapple.pos - pos)) * deltaTime;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch) {
@@ -58,6 +71,8 @@ namespace SpacePotato {
             //spriteBatch.Draw(texture, pos, null, Color.White, rot, new Vector2(texture.Width / 2F, texture.Height / 2F), scale, SpriteEffects.None, 0);
             
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - dimen.X / 2F), (int)(pos.Y - dimen.Y / 2F), (int)dimen.X, (int)dimen.Y), Color.White);
+            
+            grapple?.Draw(spriteBatch);
         }
     }
 }

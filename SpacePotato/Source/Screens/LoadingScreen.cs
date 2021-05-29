@@ -11,7 +11,7 @@ namespace SpacePotato {
             _spinner = new Spinner(ContentManager);
         }
 
-        public override void Update(GameTime gameTime, KeyInfo keys) {
+        public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
             _spinner.Update(gameTime);
         }
 

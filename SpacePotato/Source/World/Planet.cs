@@ -27,7 +27,7 @@ namespace SpacePotato {
             this.pos = pos;
             //_sprite = SpriteManager.MakePlanetTexture();
 
-            texture = Loader.texture("Common/mars_planet");
+            texture = Loader.texture($"Common/Planet{Util.randInt(1, 7)}");
         }
         
         public void Tick() {

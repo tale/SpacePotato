@@ -15,7 +15,7 @@ namespace SpacePotato {
             ScreenId = screenId;
         }
 
-        public abstract void Update(GameTime gameTime, KeyInfo keys);
+        public abstract void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse);
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
             spriteBatch.Begin(SpriteSortMode.Deferred,

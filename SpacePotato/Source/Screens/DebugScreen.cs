@@ -8,7 +8,7 @@ namespace SpacePotato {
             
         }
         
-        public override void Update(GameTime gameTime, KeyInfo keys) {
+        public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
            
         }
 
