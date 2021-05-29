@@ -11,11 +11,11 @@ namespace SpacePotato {
             _spinner = new Spinner(ContentManager);
         }
 
-        public override void Update(GameTime gameTime) {
+        public override void Update(GameTime gameTime, KeyInfo keys) {
             _spinner.Update(gameTime);
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
+        public override void BasicDraw(GameTime gameTime, SpriteBatch spriteBatch) {
             var (x, _) = _titleFont.MeasureString("SpacePotato");
             var viewport = spriteBatch.GraphicsDevice.Viewport;
 
