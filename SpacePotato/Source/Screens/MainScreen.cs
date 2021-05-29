@@ -31,9 +31,9 @@ namespace SpacePotato {
 
         public MainScreen(Game game, int screenId) : base(game, screenId) {
 
-            _camera = new Camera(SpacePotatoGame.getGraphicsDevice().Viewport);
+            Camera = new Camera(SpacePotatoGame.getGraphicsDevice().Viewport);
 
-            CreatePlayer();
+            RecreatePlayer();
 
             var level1Planets = Enumerable.Range(0, 50).
                 Select(i => new Planet(new Vector2(Util.random(-100, 5900),
@@ -42,10 +42,6 @@ namespace SpacePotato {
             _levels = new[] {
                 new Level(level1Planets, new Rectangle(-100, -1000, 6000, 2000), 1),
             };
-        }
-
-        public Player CreatePlayer() {
-            return new Player(new Vector2(0, 0));
         }
 
         private static float Delta(GameTime gameTime) {
@@ -62,10 +58,8 @@ namespace SpacePotato {
             CurrentMouse = mouse;
 
             // update code
-            _player.fullGrav(_levels[_currLevel].Planets);
-
             _player.Update(deltaTime, keys, mouse);
-            _camera.Position = _player.pos - _camera.Origin;
+            Camera.Position = _player.pos - Camera.Origin;
 
 
             if (keys.pressed(Keys.O)) {
