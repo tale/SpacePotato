@@ -7,8 +7,11 @@ namespace SpacePotato {
         public readonly int ScreenId;
         protected ContentManager ContentManager;
 
+        public static ContentManager publicContentManager;
+
         protected GameScreen(Game game, int screenId) {
             ContentManager = new ContentManager(game.Services) { RootDirectory = game.Content.RootDirectory };
+            publicContentManager = ContentManager;
             ScreenId = screenId;
         }
 
