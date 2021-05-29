@@ -18,6 +18,8 @@ namespace SpacePotato {
 
         public bool dead;
 
+        public Vector2 lastGrav;
+
         public Player(Vector2 pos) {
             texture = Loader.texture("Common/image");
             rot = 0F;
@@ -69,10 +71,13 @@ namespace SpacePotato {
             }
             else {
                 var nearPlanets = MainScreen.GetPlanets().FindAll(planet => Util.mag(pos - planet.pos) < 1000);
+
+                Vector2 grav = fullGrav(nearPlanets);
+                vel += grav * deltaTime;
+                if (keys.down(Keys.Space)) vel += Vector2.Normalize(grav * -1) * 1000 * deltaTime;
                 
-                vel += fullGrav(nearPlanets) * deltaTime;
                 pos += vel * deltaTime;
-                
+
                 foreach (var planet in nearPlanets) {
                     if (Collision.rectCircle(pos, dimen/2, planet.pos, planet.radius)) { // TODO: un-scuff collision
                         dead = true;
@@ -81,7 +86,7 @@ namespace SpacePotato {
 
                 if (mouse.leftPressed) {
                     float angle = Util.angle(mouse.pos - Camera.screenCenter);
-                    grapple = new Grapple(pos, Util.polar(3000, angle)) {player = this};
+                    grapple = new Grapple(pos, Util.polar(4000, angle)) {player = this};
                 }
                 if (mouse.leftUnpressed) grapple = null;
 
@@ -89,12 +94,16 @@ namespace SpacePotato {
                 if (grapple != null && grapple.hit) {
                     vel += Util.polar(1000, Util.angle(grapple.pos - pos)) * deltaTime;
                 }
+
+                lastGrav = grav;
             }
         }
 
         public void Draw(SpriteBatch spriteBatch) {
             
             grapple?.Draw(spriteBatch);
+            
+            RenderUtil.drawLine(pos, pos + lastGrav / 3, spriteBatch, Color.Lerp(Color.Green, Color.Transparent, 0.25F), 4);
             
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - dimen.X / 2F), (int)(pos.Y - dimen.Y / 2F), (int)dimen.X, (int)dimen.Y), Color.White);
 
