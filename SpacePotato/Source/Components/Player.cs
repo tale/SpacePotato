@@ -39,14 +39,14 @@ namespace SpacePotato {
 
         public void Update(float deltaTime, KeyInfo keys, MouseInfo mouse) {
 
-            float speed = (MainScreen.editMode) ? 1400 : 700;
+            float speed = (MainScreen.EditMode) ? 1400 : 700;
             if (keys.down(Keys.A)) pos += deltaTime * Vector2.UnitX * -speed;
             if (keys.down(Keys.D)) pos += deltaTime * Vector2.UnitX * speed;
             if (keys.down(Keys.W)) pos += deltaTime * Vector2.UnitY * -speed;
             if (keys.down(Keys.S)) pos += deltaTime * Vector2.UnitY * speed;
             
 
-            if (MainScreen.editMode) {
+            if (MainScreen.EditMode) {
                 var planets = MainScreen.GetPlanets();
                 Vector2 worldMouse = Util.toWorld(mouse.pos);
                 
@@ -98,9 +98,9 @@ namespace SpacePotato {
             
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - dimen.X / 2F), (int)(pos.Y - dimen.Y / 2F), (int)dimen.X, (int)dimen.Y), Color.White);
 
-            if (MainScreen.editMode) {
+            if (MainScreen.EditMode) {
 
-                Rectangle rect = Util.center(Util.toWorld(MainScreen.currentMouse.pos),
+                Rectangle rect = Util.center(Util.toWorld(MainScreen.CurrentMouse.pos),
                     Vector2.One * Editor.radius * 2);
                 RenderUtil.drawRect(rect, spriteBatch, Color.Green, 3);
             }
