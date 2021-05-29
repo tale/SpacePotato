@@ -14,7 +14,7 @@ namespace SpacePotato {
         public float rot, scale;
 
         public Player(Vector2 pos) {
-            texture = Loader.texture("Common/image");
+            texture = Loader.texture("Common/spinner");
             rot = 0F;
 
             this.pos = pos;
