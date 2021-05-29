@@ -7,6 +7,7 @@ namespace SpacePotato {
 
         static Paths() {
             string path = Path.GetFullPath("hi");
+            path = path.Replace("/", "\\");
             solutionPath = path.Substring(0, path.IndexOf("bin\\Debug"));
             dataPath = solutionPath + "Data\\";
         }
