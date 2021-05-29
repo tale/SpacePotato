@@ -12,7 +12,7 @@ namespace SpacePotato {
         private static Random rand = new Random();
 
         public static Vector2 toWorld(Vector2 mousePos) {
-            return MainScreen.camera.toWorld(mousePos);
+            return MainScreen.Camera.toWorld(mousePos);
         }
 
         public static float nearestAngle(float angle, float targetAngle) {

@@ -10,17 +10,17 @@ namespace SpacePotato {
         
         
         // basic stuff
-        public static Camera camera;
+        public static Camera Camera { get; set; }
         
         // input
-        public static MouseInfo currentMouse;
-        public static KeyInfo currentKeys;
+        public static MouseInfo CurrentMouse { get; set; }
+        public static KeyInfo CurrentKeys { get; set; }
         
         // settings and booleans
-        public static bool editMode;
+        public static bool EditMode { get; set; }
 
         // objects
-        private static Player player;
+        private static Player _player;
         
         private static Level[] _levels;
         public static Level level => _levels[_currLevel];
@@ -30,8 +30,8 @@ namespace SpacePotato {
 
         public MainScreen(Game game, int screenId) : base(game, screenId) {
 
-            camera = new Camera(SpacePotatoGame.getGraphicsDevice().Viewport);
-            player = CreatePlayer();
+            Camera = new Camera(SpacePotatoGame.getGraphicsDevice().Viewport);
+            _player = CreatePlayer();
 
             var level1Planets = Enumerable.Range(0, 50).
                 Select(i => new Planet(new Vector2(Util.random(-100, 5900), 
@@ -56,20 +56,21 @@ namespace SpacePotato {
         
         public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
             float deltaTime = Delta(gameTime);
-            currentKeys = keys;
-            currentMouse = mouse;
+            CurrentKeys = keys;
+            CurrentMouse = mouse;
 
             // update code
-            player.fullGrav(level.Planets);
+            _player.fullGrav(level.Planets);
             
-            if (player.dead) player = CreatePlayer();
+            if (_player.dead) _player = CreatePlayer();
             
-            player.Update(deltaTime, keys, mouse);
-            camera.Position = player.pos - camera.Origin;
+            _player.Update(deltaTime, keys, mouse);
+            Camera.Position = _player.pos - Camera.Origin;
+
 
 
             if (keys.pressed(Keys.O)) {
-                editMode ^= true;
+                EditMode ^= true;
             }
 
             if (keys.pressed(Keys.K)) {
@@ -92,10 +93,10 @@ namespace SpacePotato {
             spriteBatch.Begin(SpriteSortMode.Deferred,
                 BlendState.NonPremultiplied,
                 SamplerState.PointClamp,
-                transformMatrix: camera.CalculateViewMatrix());
+                transformMatrix: Camera.CalculateViewMatrix());
             
             // rendering code
-            player.Draw(spriteBatch);
+            _player.Draw(spriteBatch);
 
             _levels[0].Draw(gameTime, spriteBatch);
             
