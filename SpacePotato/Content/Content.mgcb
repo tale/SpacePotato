@@ -128,6 +128,30 @@
 /processorParam:TextureFormat=Color
 /build:Images/Common/PotatoHeart.png
 
+#begin Images/Common/PotatoHeartGone.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Common/PotatoHeartGone.png
+
+#begin Images/Common/PotatoHeartHalf.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Common/PotatoHeartHalf.png
+
 #begin Images/Common/spinner.png
 /importer:TextureImporter
 /processor:TextureProcessor
