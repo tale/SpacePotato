@@ -21,10 +21,11 @@ namespace SpacePotato {
 
         public void Update(float deltaTime, KeyInfo keys) {
 
-            if (keys.down(Keys.A)) pos += deltaTime * Vector2.UnitX * -100;
-            if (keys.down(Keys.D)) pos += deltaTime * Vector2.UnitX * 100;
-            if (keys.down(Keys.W)) pos += deltaTime * Vector2.UnitY * -100;
-            if (keys.down(Keys.S)) pos += deltaTime * Vector2.UnitY * 100;
+            const float speed = 700;
+            if (keys.down(Keys.A)) pos += deltaTime * Vector2.UnitX * -speed;
+            if (keys.down(Keys.D)) pos += deltaTime * Vector2.UnitX * speed;
+            if (keys.down(Keys.W)) pos += deltaTime * Vector2.UnitY * -speed;
+            if (keys.down(Keys.S)) pos += deltaTime * Vector2.UnitY * speed;
         }
 
         public void Draw(SpriteBatch spriteBatch) {
