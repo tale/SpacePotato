@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Runner;
 using SpacePotato.Source.Util;
 
 namespace SpacePotato {
@@ -16,7 +18,18 @@ namespace SpacePotato {
             rot = 0F;
 
             this.pos = pos;
-            dimen = new Vector2(100, 100);
+            dimen = new Vector2(50, 50);
+        }
+
+
+        public Vector2 fullGrav(List<Planet> planets) {
+            Vector2 grav = Vector2.Zero;
+
+            foreach (var planet in planets) {
+                grav += planet.Gravity(pos);
+            }
+            
+            return grav;
         }
 
         public void Update(float deltaTime, KeyInfo keys) {
@@ -26,6 +39,17 @@ namespace SpacePotato {
             if (keys.down(Keys.D)) pos += deltaTime * Vector2.UnitX * speed;
             if (keys.down(Keys.W)) pos += deltaTime * Vector2.UnitY * -speed;
             if (keys.down(Keys.S)) pos += deltaTime * Vector2.UnitY * speed;
+            
+            var nearPlanets = MainScreen.planets.FindAll(planet => Util.mag(pos - planet.pos) < 1000);
+
+            vel += fullGrav(nearPlanets) * deltaTime;
+            pos += vel * deltaTime;
+
+            foreach (var planet in nearPlanets) {
+                if (Collision.rectCircle(pos, dimen, planet.pos, planet.radius)) { // TODO: un-scuff collision
+                    pos = Vector2.Zero;
+                }
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch) {

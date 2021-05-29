@@ -6,15 +6,16 @@ using SpacePotato.Source.Util;
 namespace SpacePotato {
     public class Planet {
         
-        private const float GravityStrengthModifier = .0000015f, GravityFalloffModifier = .0083f;
+        private const float GravityStrengthModifier = .015f, GravityFalloffModifier = .0083f;
 
         private float _planetMass = 10000;
 
         public Texture2D texture;
 
-        private Vector2 pos;
+        public Vector2 pos;
 
         public float radius;
+        public float Diameter => radius * 2;
 
         public float X => pos.X;
 
@@ -34,7 +35,7 @@ namespace SpacePotato {
 
         }
 
-        public Vector2 Gravity(GameTime gametime, Vector2 objectPosition) {
+        public Vector2 Gravity(Vector2 objectPosition) {
 
             var (x, y) = objectPosition;
 

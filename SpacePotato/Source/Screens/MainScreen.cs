@@ -15,7 +15,7 @@ namespace SpacePotato {
         
         // objects
         public Player player;
-        public List<Planet> planets;
+        public static List<Planet> planets;
         
         
         public MainScreen(Game game, int screenId) : base(game, screenId) {
