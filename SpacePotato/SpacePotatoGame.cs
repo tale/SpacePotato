@@ -16,7 +16,7 @@ namespace SpacePotato {
 
         public SpacePotatoGame(Options options) {
             _graphics = new GraphicsDeviceManager(this);
-            _screenManager = new ScreenManager(this, 0);
+            _screenManager = new ScreenManager(this, 1);
             
             _options = options;
 

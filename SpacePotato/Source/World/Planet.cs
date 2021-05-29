@@ -1,29 +1,35 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using SpacePotato.Source.Util;
 
-namespace SpacePotato.Source.World {
+namespace SpacePotato {
     public class Planet {
         
         private const float GravityStrengthModifier = .0000015f, GravityFalloffModifier = .0083f;
 
         private float _planetMass = 10000;
 
-        public Planet(Vector2 position, float radius, float mass, float changeInAngle) {
-            
-            Radius = radius;
-            Position = position;
+        public Texture2D texture;
+
+        private Vector2 pos;
+
+        public float radius;
+
+        public float X => pos.X;
+
+        public float Y => pos.Y;
+
+        public Planet(Vector2 pos, float radius, float mass = 10000, float changeInAngle = 0) {
+
+            this.radius = radius;
+            this.pos = pos;
             //_sprite = SpriteManager.MakePlanetTexture();
+
+            texture = Loader.texture("Common/mars_planet");
         }
-
-        private Vector2 Position { get; }
-
-        public float Radius { get; set; }
-
-        public float X => Position.X;
-
-        public float Y => Position.Y;
+        
         public void Tick() {
-            
             //does nothing
 
         }
@@ -32,22 +38,26 @@ namespace SpacePotato.Source.World {
 
             var (x, y) = objectPosition;
 
-            if (Math.Sqrt(Math.Pow(Position.X - x, 2) + Math.Pow(Position.Y - y, 2)) > 1000)
+            if (Math.Sqrt(Math.Pow(pos.X - x, 2) + Math.Pow(pos.Y - y, 2)) > 1000)
                 return Vector2.Zero;
 
             float acceleration = (float)(GravityStrengthModifier * _planetMass /
-                                         (Math.Pow((Position.X - x) * GravityFalloffModifier, 2) + 
-                                          Math.Pow((Position.Y - y) * GravityFalloffModifier, 2)));
+                                         (Math.Pow((pos.X - x) * GravityFalloffModifier, 2) + 
+                                          Math.Pow((pos.Y - y) * GravityFalloffModifier, 2)));
 
-            float angle = (float)(Math.Atan((Position.Y - y) / (Position.X - x)));
+            float angle = (float)(Math.Atan((pos.Y - y) / (pos.X - x)));
 
-            if (Position.X - x < 0 && Position.Y - y > 0 || Position.X - x < 0 && Position.Y - y < 0) {
+            if (pos.X - x < 0 && pos.Y - y > 0 || pos.X - x < 0 && pos.Y - y < 0) {
 
                 angle += (float)Math.PI;
                 angle %= (float)Math.PI * 2;
             }
 
             return new Vector2((float)(acceleration * Math.Cos(angle)), (float)(acceleration * Math.Sin(angle)));
+        }
+
+        public void Draw(SpriteBatch spriteBatch) {
+            spriteBatch.Draw(texture, new Rectangle((int)(pos.X - radius), (int)(pos.Y - radius), (int) (radius * 2), (int) (radius * 2)), Color.White);
         }
     }
 }

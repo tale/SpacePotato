@@ -18,7 +18,9 @@ namespace SpacePotato {
         public abstract void Update(GameTime gameTime, KeyInfo keys);
 
         public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap);
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                BlendState.NonPremultiplied,
+                SamplerState.PointClamp);
             
             BasicDraw(gameTime, spriteBatch);
             
