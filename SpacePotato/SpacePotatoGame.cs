@@ -12,7 +12,6 @@ namespace SpacePotato {
 
         public static SpacePotatoGame instance;
         
-        
         public KeyboardState lastKeyboardState;
 
         public SpacePotatoGame(Options options) {
