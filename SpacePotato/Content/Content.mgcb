@@ -32,6 +32,18 @@
 /processorParam:TextureFormat=Color
 /build:Images/Common/image.png
 
+#begin Images/Common/mars_planet.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Images/Common/mars_planet.png
+
 #begin Images/Common/spinner.png
 /importer:TextureImporter
 /processor:TextureProcessor
