@@ -14,9 +14,10 @@ namespace SpacePotato {
         public Vector2 pos, vel, dimen;
         public float rot, scale;
 
-        public Grapple grapple;
+        private Grapple _grapple;
 
-        public bool dead;
+        private short _health = 3;
+        private float _invincibilityTime = 1.5f;
 
         public Vector2 lastGrav;
 
@@ -28,6 +29,20 @@ namespace SpacePotato {
             dimen = new Vector2(50, 50);
         }
 
+        public void CollideWithPlanet(float deltaTime) {
+            vel = new Vector2(-vel.X * 0.5f, -vel.Y * 0.5f); // TODO: Calculate velocity
+
+            if (_invincibilityTime < 0) {
+                _health--;
+                _grapple = null;
+                _invincibilityTime = 1.0f;
+
+                if (_health == 0) {
+                    _health = 3;
+                    MainScreen.RecreatePlayer();
+                }
+            };
+        }
 
         public Vector2 fullGrav(List<Planet> planets) {
             Vector2 grav = Vector2.Zero;
@@ -35,7 +50,7 @@ namespace SpacePotato {
             foreach (var planet in planets) {
                 grav += planet.Gravity(pos);
             }
-            
+
             return grav;
         }
 
@@ -46,15 +61,15 @@ namespace SpacePotato {
             if (keys.down(Keys.D)) pos += deltaTime * Vector2.UnitX * speed;
             if (keys.down(Keys.W)) pos += deltaTime * Vector2.UnitY * -speed;
             if (keys.down(Keys.S)) pos += deltaTime * Vector2.UnitY * speed;
-            
+
 
             if (MainScreen.EditMode) {
                 var planets = MainScreen.GetPlanets();
                 Vector2 worldMouse = Util.toWorld(mouse.pos);
-                
+
                 if (keys.pressed(Keys.Up)) Editor.nextRadius();
                 if (keys.pressed(Keys.Down)) Editor.lastRadius();
-                
+
                 if (mouse.leftPressed) {
                     planets.Add(new Planet(worldMouse, Editor.radius));
                 }
@@ -75,24 +90,24 @@ namespace SpacePotato {
                 Vector2 grav = fullGrav(nearPlanets);
                 vel += grav * deltaTime;
                 if (keys.down(Keys.Space)) vel += Vector2.Normalize(grav * -1) * 1000 * deltaTime;
-                
+
                 pos += vel * deltaTime;
 
                 foreach (var planet in nearPlanets) {
                     if (Collision.rectCircle(pos, dimen/2, planet.pos, planet.radius)) { // TODO: un-scuff collision
-                        dead = true;
+                        CollideWithPlanet(deltaTime);
                     }
                 }
 
                 if (mouse.leftPressed) {
                     float angle = Util.angle(mouse.pos - Camera.screenCenter);
-                    grapple = new Grapple(pos, Util.polar(4000, angle)) {player = this};
+                    _grapple = new Grapple(pos, Util.polar(3000, angle)) {player = this};
                 }
-                if (mouse.leftUnpressed) grapple = null;
+                if (mouse.leftUnpressed) _grapple = null;
 
-                grapple?.Update(deltaTime);
-                if (grapple != null && grapple.hit) {
-                    vel += Util.polar(1000, Util.angle(grapple.pos - pos)) * deltaTime;
+                _grapple?.Update(deltaTime);
+                if (_grapple is { hit: true }) {
+                    vel += Util.polar(1000, Util.angle(_grapple.pos - pos)) * deltaTime;
                 }
 
                 lastGrav = grav;
@@ -100,11 +115,11 @@ namespace SpacePotato {
         }
 
         public void Draw(SpriteBatch spriteBatch) {
-            
-            grapple?.Draw(spriteBatch);
-            
+
+            _grapple?.Draw(spriteBatch);
+
             RenderUtil.drawLine(pos, pos + lastGrav / 3, spriteBatch, Color.Lerp(Color.Green, Color.Transparent, 0.25F), 4);
-            
+
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - dimen.X / 2F), (int)(pos.Y - dimen.Y / 2F), (int)dimen.X, (int)dimen.Y), Color.White);
 
             if (MainScreen.EditMode) {
