@@ -32,7 +32,8 @@ namespace SpacePotato {
             float deltaTime = delta(gameTime);
 
             // update code
-            if (keys.down(Keys.Space)) player.pos += Vector2.One * 500 * deltaTime;
+
+            player.Update(deltaTime, keys);
             camera.Position = player.pos - camera.Origin;
         }
 
@@ -43,7 +44,7 @@ namespace SpacePotato {
             
             // rendering code
             
-            player.Draw(gameTime, spriteBatch);
+            player.Draw(spriteBatch);
 
             spriteBatch.Draw(testTexture, new Rectangle(500, 700, 100, 100), Color.White);
 
