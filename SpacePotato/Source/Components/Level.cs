@@ -12,8 +12,18 @@ namespace SpacePotato {
         public Rectangle Bounds { get; set; }
         public int LevelID { get; set; }
 
+
         private ParallaxLayer layer1;
         private ParallaxLayer layer2;
+
+        public Level() {}
+
+        public void setUpSerialized() {
+            foreach (var planet in Planets) {
+                planet.setUpSerialized();
+            }
+        }
+
         public Level(List<Planet> planets, Rectangle bounds, int levelID) {
             this.Planets = planets;
             this.Bounds = bounds;
@@ -24,6 +34,7 @@ namespace SpacePotato {
             
             layer1 = new ParallaxLayer(bounds2, 2, 100);
             layer2 = new ParallaxLayer(bounds2, 3, 100);
+            
 
         }
 
@@ -42,14 +53,14 @@ namespace SpacePotato {
                 planet.Draw(spriteBatch);
             }
             
-            
-            RenderUtil.drawLineScreen(new Vector2(Bounds.Left, Bounds.Top), 
+
+            RenderUtil.drawLine(new Vector2(Bounds.Left, Bounds.Top), 
                 new Vector2(Bounds.Right, Bounds.Top), spriteBatch, Color.White, thickness:10);
-            RenderUtil.drawLineScreen(new Vector2(Bounds.Left, Bounds.Bottom), 
+            RenderUtil.drawLine(new Vector2(Bounds.Left, Bounds.Bottom), 
                 new Vector2(Bounds.Right, Bounds.Bottom), spriteBatch, Color.White, thickness:10);
-            RenderUtil.drawLineScreen(new Vector2(Bounds.Left, Bounds.Top), 
+            RenderUtil.drawLine(new Vector2(Bounds.Left, Bounds.Top), 
                 new Vector2(Bounds.Left, Bounds.Bottom), spriteBatch, Color.White, thickness:10);
-            RenderUtil.drawLineScreen(new Vector2(Bounds.Right, Bounds.Top), 
+            RenderUtil.drawLine(new Vector2(Bounds.Right, Bounds.Top), 
                 new Vector2(Bounds.Right, Bounds.Bottom), spriteBatch, Color.White, thickness:10);
         }
     }

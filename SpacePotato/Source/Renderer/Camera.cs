@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace SpacePotato {
     public class Camera {
 
-        public static Vector2 screenCenter;
+        public static Vector2 screenCenter, screenDimen;
         
         public Camera(Viewport viewport) {
             Rotation = 0;
@@ -13,6 +13,7 @@ namespace SpacePotato {
             Position = Vector2.Zero;
 
             screenCenter = Origin;
+            screenDimen = Origin * 2;
         }
 
         public static Vector2 Position { get; set; }
@@ -29,8 +30,8 @@ namespace SpacePotato {
                 Matrix.CreateTranslation(new Vector3(Origin, 0.0f));
         }
 
-        public Vector2 toScreen(Vector2 mousePos) {
-            return (mousePos - Origin) * Zoom;
+        public Vector2 toWorld(Vector2 mousePos) {
+            return (mousePos - Origin) / Zoom + Position + Origin;
         }
     }
 }
