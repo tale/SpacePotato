@@ -1,8 +1,7 @@
-using SpacePotato.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpacePotato.Screens {
+namespace SpacePotato {
     public class LoadingScreen : GameScreen {
         private readonly Spinner _spinner;
         private readonly SpriteFont _titleFont;

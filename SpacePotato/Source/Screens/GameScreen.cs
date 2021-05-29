@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpacePotato.Screens {
+namespace SpacePotato {
     public abstract class GameScreen {
         public readonly int ScreenId;
         protected ContentManager ContentManager;

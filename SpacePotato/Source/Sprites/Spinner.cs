@@ -1,10 +1,9 @@
 using System;
-using SpacePotato.Renderer;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpacePotato.Sprites {
+namespace SpacePotato {
     public class Spinner : Component {
         private readonly Texture2D _texture;
         private Vector2 _position;

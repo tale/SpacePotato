@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpacePotato.Screens {
+namespace SpacePotato {
     public class ScreenManager {
         private readonly Game _game;
         private readonly Dictionary<int, GameScreen> _screens = new Dictionary<int, GameScreen>();

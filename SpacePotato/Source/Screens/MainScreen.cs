@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpacePotato.Screens {
+namespace SpacePotato {
     public class MainScreen : GameScreen {
         
         public Texture2D player;

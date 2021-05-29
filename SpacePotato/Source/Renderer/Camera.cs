@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace SpacePotato.Renderer {
+namespace SpacePotato {
     public class Camera {
         public Camera(Viewport viewport) {
             Rotation = 0;
