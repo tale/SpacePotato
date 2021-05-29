@@ -14,7 +14,7 @@ namespace SpacePotato {
 
         public SpacePotatoGame(Options options) {
             _graphics = new GraphicsDeviceManager(this);
-            _screenManager = new ScreenManager(this, 0);
+            _screenManager = new ScreenManager(this, 1);
             _options = options;
 
             Content.RootDirectory = "Content";
@@ -36,6 +36,7 @@ namespace SpacePotato {
             _camera = new Camera(GraphicsDevice.Viewport);
 
             _screenManager.RegisterScreen(new LoadingScreen(this, 0));
+            _screenManager.RegisterScreen(new MainScreen(this, 1));
 
             base.Initialize();
         }
