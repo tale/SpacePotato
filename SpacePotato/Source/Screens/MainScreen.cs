@@ -7,9 +7,6 @@ using Microsoft.Xna.Framework.Input;
 namespace SpacePotato {
     public class MainScreen : GameScreen {
         
-        // debug
-        public Vector2 testPos = Vector2.Zero;
-        public Texture2D testTexture;
         
         // basic stuff
         public static Camera camera;
@@ -17,63 +14,63 @@ namespace SpacePotato {
         // input
         public static MouseInfo currentMouse;
         public static KeyInfo currentKeys;
+        private static Camera _camera;
         
         // settings and bools
         public static bool editMode;
-        
+
         // objects
-        public Player player;
+        private static Player player;
         
-        public Level level;
-        public static List<Planet> planets;
-        public Rectangle bounds;
+        private static Level[] _levels;
+
+        private static int _currLevel = 0;
 
 
         public MainScreen(Game game, int screenId) : base(game, screenId) {
-            testTexture = ContentManager.Load<Texture2D>("Images/Common/image");
+
+            _camera = new Camera(SpacePotatoGame.getGraphicsDevice().Viewport);
+
+            player = CreatePlayer();
+
+            var level1Planets = Enumerable.Range(0, 50).
+                Select(i => new Planet(new Vector2(Util.random(-100, 5900), 
+                    Util.random(-1000, 1000)), 100)).ToList();
             
-            camera = new Camera(SpacePotatoGame.getGraphicsDevice().Viewport);
-
-            player = createPlayer();
-
-            const float expanse = 3000;
-            planets = Enumerable.Range(0, 50).Select(i => new Planet(new Vector2(Util.random(-expanse, expanse), Util.random(-expanse, expanse)), 100)).ToList();
+            _levels = new Level[1];
+            _levels[0] = new Level(level1Planets, new Rectangle(-100, -1000, 6000, 2000), 1);
         }
 
-        public Player createPlayer() {
+        public Player CreatePlayer() {
             return new Player(new Vector2(0, 0));
         }
 
-        private static float delta(GameTime gameTime) {
+        private static float Delta(GameTime gameTime) {
             return (float) gameTime.ElapsedGameTime.TotalSeconds;
         }
 
-        public void loadLevel(Level level) {
-            this.level = level;
-            planets = level.planets.ToList();
-            bounds = level.bounds;
+        public static List<Planet> GetPlanets() {
+            return _levels[_currLevel].Planets;
         }
-
+        
         public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
-            float deltaTime = delta(gameTime);
+            float deltaTime = Delta(gameTime);
             currentKeys = keys;
             currentMouse = mouse;
 
             // update code
-
-            if (player.dead) player = createPlayer();
+            player.fullGrav(_levels[_currLevel].Planets);
+            
+            if (player.dead) player = CreatePlayer();
             
             player.Update(deltaTime, keys, mouse);
-            camera.Position = player.pos - camera.Origin;
+            _camera.Position = player.pos - _camera.Origin;
 
 
             if (keys.pressed(Keys.O)) {
                 editMode ^= true;
             }
-
-            if (keys.pressed(Keys.L)) {
-                planets.Clear();
-            }
+            
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
@@ -81,16 +78,12 @@ namespace SpacePotato {
             spriteBatch.Begin(SpriteSortMode.Deferred,
                 BlendState.NonPremultiplied,
                 SamplerState.PointClamp,
-                transformMatrix: camera.CalculateViewMatrix());
+                transformMatrix: _camera.CalculateViewMatrix());
             
             // rendering code
-            
-            foreach (var planet in planets) {
-                planet.Draw(spriteBatch);
-            }
             player.Draw(spriteBatch);
 
-            spriteBatch.Draw(testTexture, new Rectangle(500, 700, 100, 100), Color.White);
+            _levels[0].Draw(gameTime, spriteBatch);
             
             // end
             spriteBatch.End();

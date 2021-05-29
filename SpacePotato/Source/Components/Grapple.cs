@@ -23,7 +23,7 @@ namespace SpacePotato {
             if (!hit) {
                 pos += vel * deltaTime;
                 
-                var nearPlanets = MainScreen.planets.FindAll(planet => Util.mag(pos - planet.pos) < 1000);
+                var nearPlanets = MainScreen.GetPlanets().FindAll(planet => Util.mag(pos - planet.pos) < 1000);
                 foreach (var planet in nearPlanets) {
                     if (Collision.circle(planet.pos, planet.radius, pos, radius)) {
                         hit = true;

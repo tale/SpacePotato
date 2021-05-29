@@ -47,7 +47,7 @@ namespace SpacePotato {
             
 
             if (MainScreen.editMode) {
-                var planets = MainScreen.planets;
+                var planets = MainScreen.GetPlanets();
                 Vector2 worldMouse = Util.toWorld(mouse.pos);
                 
                 if (keys.pressed(Keys.Up)) Editor.nextRadius();
@@ -68,7 +68,7 @@ namespace SpacePotato {
 
             }
             else {
-                var nearPlanets = MainScreen.planets.FindAll(planet => Util.mag(pos - planet.pos) < 1000);
+                var nearPlanets = MainScreen.GetPlanets().FindAll(planet => Util.mag(pos - planet.pos) < 1000);
                 
                 vel += fullGrav(nearPlanets) * deltaTime;
                 pos += vel * deltaTime;
@@ -100,7 +100,8 @@ namespace SpacePotato {
 
             if (MainScreen.editMode) {
 
-                Rectangle rect = Util.center(Util.toWorld(MainScreen.currentMouse.pos), Vector2.One * Editor.radius * 2);
+                Rectangle rect = Util.center(Util.toWorld(MainScreen.currentMouse.pos),
+                    Vector2.One * Editor.radius * 2);
                 RenderUtil.drawRect(rect, spriteBatch, Color.Green, 3);
             }
         }
