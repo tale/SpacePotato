@@ -8,26 +8,40 @@ namespace SpacePotato {
         
         private const float GravityStrengthModifier = .065f, GravityFalloffModifier = .0083f;
 
-        private float _planetMass = 10000;
+        private const float _planetMass = 10000;
 
         public Texture2D texture;
 
         public Vector2 pos;
+        public float radius, mass, angle;
+        public int typeIndex;
 
-        public float radius;
         public float Diameter => radius * 2;
 
         public float X => pos.X;
 
         public float Y => pos.Y;
 
-        public Planet(Vector2 pos, float radius, float mass = 10000, float changeInAngle = 0) {
+
+        public static Texture2D[] textures;
+
+        static Planet() {
+            const int count = 6;
+            textures = new Texture2D[count];
+            for (int i = 0; i < count; i++) {
+                textures[i] = Loader.texture($"Common/Planet{i+1}");
+            }
+        }
+
+        public Planet(Vector2 pos, float radius, float mass = _planetMass, float angle = 0) {
 
             this.radius = radius;
             this.pos = pos;
-            //_sprite = SpriteManager.MakePlanetTexture();
 
-            texture = Loader.texture($"Common/Planet{Util.randInt(1, 7)}");
+            this.mass = mass;
+            this.angle = angle;
+            
+            texture = textures[Util.randInt(6)];
         }
         
         public void Tick() {

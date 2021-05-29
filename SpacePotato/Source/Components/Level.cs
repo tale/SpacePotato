@@ -1,19 +1,18 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Rectangle = System.Drawing.Rectangle;
 
 namespace SpacePotato {
     
     public class Level {
-        
-        private Planet[] _planets;
-        private Rectangle _bounds;
-        private int _levelId;
 
-        public Level(Planet[] planets, Rectangle bounds, int levelId) {
-            this._planets = planets;
-            this._bounds = bounds;
-            this._levelId = levelId;
+        public Planet[] planets { get; set; }
+        public Rectangle bounds { get; set; }
+        public int levelID { get; set; }
+
+        public Level(Planet[] planets, Rectangle bounds, int levelID) {
+            this.planets = planets;
+            this.bounds = bounds;
+            this.levelID = levelID;
         }
 
         public void Update(GameTime gameTime) {
@@ -22,13 +21,10 @@ namespace SpacePotato {
 
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
             
-            foreach (Planet planet in _planets) {
+            foreach (Planet planet in planets) {
                 
                 planet.Draw(spriteBatch);
             }
         }
-        
-        
-        
     }
 }
