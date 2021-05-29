@@ -22,6 +22,10 @@ namespace SpacePotato {
             foreach (var planet in Planets) {
                 planet.setUpSerialized();
             }
+            Rectangle bounds2 = new Rectangle(Bounds.Left - 500, Bounds.Top - 500,
+                Bounds.Width + 500, Bounds.Height + 1000);
+            layer1 = new ParallaxLayer(bounds2, 2, 100);
+            layer2 = new ParallaxLayer(bounds2, 3, 100);
         }
 
         public Level(List<Planet> planets, Rectangle bounds, int levelID) {
@@ -31,11 +35,8 @@ namespace SpacePotato {
 
             Rectangle bounds2 = new Rectangle(bounds.Left - 500, bounds.Top - 500,
                 bounds.Width + 500, bounds.Height + 1000);
-            
             layer1 = new ParallaxLayer(bounds2, 2, 100);
             layer2 = new ParallaxLayer(bounds2, 3, 100);
-            
-
         }
 
         public void Update(GameTime gameTime) {
