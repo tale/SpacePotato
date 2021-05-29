@@ -8,11 +8,11 @@ namespace SpacePotato {
             
         }
         
-        public override void Update(GameTime gameTime) {
+        public override void Update(GameTime gameTime, KeyInfo keys) {
            
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
+        public override void BasicDraw(GameTime gameTime, SpriteBatch spriteBatch) {
             
         }
         

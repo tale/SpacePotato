@@ -12,7 +12,16 @@ namespace SpacePotato {
             ScreenId = screenId;
         }
 
-        public abstract void Update(GameTime gameTime);
-        public abstract void Draw(GameTime gameTime, SpriteBatch spriteBatch);
+        public abstract void Update(GameTime gameTime, KeyInfo keys);
+
+        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
+            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap);
+            
+            BasicDraw(gameTime, spriteBatch);
+            
+            spriteBatch.End();
+        }
+        
+        public virtual void BasicDraw(GameTime gameTime, SpriteBatch spriteBatch) { }
     }
 }

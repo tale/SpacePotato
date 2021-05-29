@@ -8,17 +8,22 @@ namespace SpacePotato {
         private readonly GraphicsDeviceManager _graphics;
         private readonly Options _options;
         private readonly ScreenManager _screenManager;
-        private Camera _camera;
         private SpriteBatch _spriteBatch;
+
+        public static SpacePotatoGame instance;
+        
+        
+        public KeyboardState lastKeyboardState;
 
         public SpacePotatoGame(Options options) {
             _graphics = new GraphicsDeviceManager(this);
-            _screenManager = new ScreenManager(this, -1);
+            _screenManager = new ScreenManager(this, 1);
             
             _options = options;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            instance = this;
         }
 
         protected override void Initialize() {
@@ -33,7 +38,6 @@ namespace SpacePotato {
             _graphics.GraphicsDevice.PresentationParameters.MultiSampleCount = 1024;
 
             _graphics.ApplyChanges();
-            _camera = new Camera(GraphicsDevice.Viewport);
 
             _screenManager.RegisterScreen(new DebugScreen(this, -1));
             _screenManager.RegisterScreen(new LoadingScreen(this, 0));
@@ -48,37 +52,31 @@ namespace SpacePotato {
             // TODO: use this.Content to load your game content here
         }
 
+        public static GraphicsDevice getGraphicsDevice() {
+            return instance.GraphicsDevice;
+        }
+
         protected override void Update(GameTime gameTime) {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed ||
                 Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            var deltaTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
-            var keyboardState = Keyboard.GetState();
+            float deltaTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
 
-            // movement
-            if (keyboardState.IsKeyDown(Keys.W))
-                _camera.Position -= new Vector2(0, 250) * deltaTime;
+            // key input
+            KeyboardState keyState = Keyboard.GetState();
+            KeyInfo keys = new KeyInfo(keyState, lastKeyboardState);
+            lastKeyboardState = keyState;
 
-            if (keyboardState.IsKeyDown(Keys.S))
-                _camera.Position += new Vector2(0, 250) * deltaTime;
-
-            if (keyboardState.IsKeyDown(Keys.A))
-                _camera.Position -= new Vector2(250, 0) * deltaTime;
-
-            if (keyboardState.IsKeyDown(Keys.D))
-                _camera.Position += new Vector2(250, 0) * deltaTime;
-
-            _screenManager.Update(gameTime);
+            _screenManager.Update(gameTime, keys);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.Black);
-            _spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap,
-                transformMatrix: _camera.CalculateViewMatrix());
+            
             _screenManager.Draw(gameTime, _spriteBatch);
-            _spriteBatch.End();
+            
             base.Draw(gameTime);
         }
     }
