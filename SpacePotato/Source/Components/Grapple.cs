@@ -34,7 +34,7 @@ namespace SpacePotato {
         }
 
         public void Draw(SpriteBatch spriteBatch) {
-            RenderUtil.drawLineScreen(pos, player.pos, spriteBatch, Color.White, 3);
+            RenderUtil.drawLine(pos, player.pos, spriteBatch, Color.White, 3);
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - radius), (int)(pos.Y - radius), (int) (radius * 2), (int) (radius * 2)), Color.White);
 
             /*Vector2 diff = pos - player.pos;

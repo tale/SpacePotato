@@ -12,7 +12,11 @@ namespace SpacePotato {
         public Texture2D testTexture;
         
         // basic stuff
-        public Camera camera;
+        public static Camera camera;
+        
+        // input
+        public static MouseInfo currentMouse;
+        public static KeyInfo currentKeys;
         
         // settings and bools
         public static bool editMode;
@@ -52,6 +56,8 @@ namespace SpacePotato {
 
         public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
             float deltaTime = delta(gameTime);
+            currentKeys = keys;
+            currentMouse = mouse;
 
             // update code
 

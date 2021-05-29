@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Runner;
+using SpacePotato.Source.Editor;
 using SpacePotato.Source.Util;
 
 namespace SpacePotato {
@@ -46,9 +47,25 @@ namespace SpacePotato {
             
 
             if (MainScreen.editMode) {
+                var planets = MainScreen.planets;
+                Vector2 worldMouse = Util.toWorld(mouse.pos);
                 
+                if (keys.pressed(Keys.Up)) Editor.nextRadius();
+                if (keys.pressed(Keys.Down)) Editor.lastRadius();
                 
-                
+                if (mouse.leftPressed) {
+                    planets.Add(new Planet(worldMouse, Editor.radius));
+                }
+
+                if (mouse.rightDown) {
+                    for (int i = planets.Count - 1; i >= 0; i--) {
+                        var planet = planets[i];
+                        if (Collision.pointCircle(worldMouse, planet.pos, planet.radius)) {
+                            planets.RemoveAt(i);
+                        }
+                    }
+                }
+
             }
             else {
                 var nearPlanets = MainScreen.planets.FindAll(planet => Util.mag(pos - planet.pos) < 1000);
@@ -77,16 +94,14 @@ namespace SpacePotato {
 
         public void Draw(SpriteBatch spriteBatch) {
             
-            //spriteBatch.Draw(texture, pos, null, Color.White, rot, new Vector2(texture.Width / 2F, texture.Height / 2F), scale, SpriteEffects.None, 0);
-
             grapple?.Draw(spriteBatch);
             
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - dimen.X / 2F), (int)(pos.Y - dimen.Y / 2F), (int)dimen.X, (int)dimen.Y), Color.White);
 
             if (MainScreen.editMode) {
-                
-                
-                
+
+                Rectangle rect = Util.center(Util.toWorld(MainScreen.currentMouse.pos), Vector2.One * Editor.radius * 2);
+                RenderUtil.drawRect(rect, spriteBatch, Color.Green, 3);
             }
         }
     }

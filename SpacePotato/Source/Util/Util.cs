@@ -11,6 +11,10 @@ namespace SpacePotato {
 
         private static Random rand = new Random();
 
+        public static Vector2 toWorld(Vector2 mousePos) {
+            return MainScreen.camera.toWorld(mousePos);
+        }
+
         public static float nearestAngle(float angle, float targetAngle) {
             float diff = targetAngle - angle;
             if (Math.Abs(diff) < Maths.PI) {
