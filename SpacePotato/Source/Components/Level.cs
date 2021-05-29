@@ -28,13 +28,13 @@ namespace SpacePotato {
                 planet.Draw(spriteBatch);
             }
             
-            RenderUtil.drawLine(new Vector2(Bounds.Left, Bounds.Top), 
+            RenderUtil.drawLineScreen(new Vector2(Bounds.Left, Bounds.Top), 
                 new Vector2(Bounds.Right, Bounds.Top), spriteBatch, Color.White, thickness:10);
-            RenderUtil.drawLine(new Vector2(Bounds.Left, Bounds.Bottom), 
+            RenderUtil.drawLineScreen(new Vector2(Bounds.Left, Bounds.Bottom), 
                 new Vector2(Bounds.Right, Bounds.Bottom), spriteBatch, Color.White, thickness:10);
-            RenderUtil.drawLine(new Vector2(Bounds.Left, Bounds.Top), 
+            RenderUtil.drawLineScreen(new Vector2(Bounds.Left, Bounds.Top), 
                 new Vector2(Bounds.Left, Bounds.Bottom), spriteBatch, Color.White, thickness:10);
-            RenderUtil.drawLine(new Vector2(Bounds.Right, Bounds.Top), 
+            RenderUtil.drawLineScreen(new Vector2(Bounds.Right, Bounds.Top), 
                 new Vector2(Bounds.Right, Bounds.Bottom), spriteBatch, Color.White, thickness:10);
         }
     }
