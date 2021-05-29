@@ -48,6 +48,7 @@ namespace SpacePotato {
             foreach (var planet in nearPlanets) {
                 if (Collision.rectCircle(pos, dimen, planet.pos, planet.radius)) { // TODO: un-scuff collision
                     pos = Vector2.Zero;
+                    vel = Vector2.Zero;
                 }
             }
         }
