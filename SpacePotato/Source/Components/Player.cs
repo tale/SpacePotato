@@ -22,7 +22,7 @@ namespace SpacePotato {
             
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatch spriteBatch) {
             
             //spriteBatch.Draw(texture, pos, null, Color.White, rot, new Vector2(texture.Width / 2F, texture.Height / 2F), scale, SpriteEffects.None, 0);
             

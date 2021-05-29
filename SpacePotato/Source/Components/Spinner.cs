@@ -23,10 +23,10 @@ namespace SpacePotato {
         public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, float scale) {
             _position = position;
             _scale = scale;
-            Draw(gameTime, spriteBatch);
+            Draw(spriteBatch);
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
+        public override void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(_texture, _position, null, Color.White, _rotation,
                 new Vector2(_texture.Width / 2F, _texture.Height / 2F), _scale, SpriteEffects.None, 0);
         }
