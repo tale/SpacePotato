@@ -6,58 +6,71 @@ using Microsoft.Xna.Framework.Input;
 
 namespace SpacePotato {
     public class MainScreen : GameScreen {
-        private static Player _player;
-        public static void RecreatePlayer() {
-            _player = new Player(new Vector2(0, 0));
-        }
-
-
+        
+        
         // basic stuff
         public static Camera camera;
-
+        
         // input
         public static MouseInfo currentMouse;
         public static KeyInfo currentKeys;
         private static Camera _camera;
-
+        
         // settings and bools
         public static bool editMode;
 
-        public Level level;
-        public static List<Planet> planets;
-        public Rectangle bounds;
+        // objects
+        private static Player player;
+        
+        private static Level[] _levels;
+
+        private static int _currLevel = 0;
 
 
         public MainScreen(Game game, int screenId) : base(game, screenId) {
-            testTexture = ContentManager.Load<Texture2D>("Images/Common/image");
 
-            RecreatePlayer();
-            camera = new Camera(SpacePotatoGame.getGraphicsDevice().Viewport);
-            const float expanse = 3000;
-            planets = Enumerable.Range(0, 50).Select(i => new Planet(new Vector2(Util.random(-expanse, expanse), Util.random(-expanse, expanse)), 100)).ToList();
+            _camera = new Camera(SpacePotatoGame.getGraphicsDevice().Viewport);
+
+            player = CreatePlayer();
+
+            var level1Planets = Enumerable.Range(0, 50).
+                Select(i => new Planet(new Vector2(Util.random(-100, 5900), 
+                    Util.random(-1000, 1000)), 100)).ToList();
+            
+            _levels = new Level[1];
+            _levels[0] = new Level(level1Planets, new Rectangle(-100, -1000, 6000, 2000), 1);
         }
 
-        private static float delta(GameTime gameTime) {
+        public Player CreatePlayer() {
+            return new Player(new Vector2(0, 0));
+        }
+
+        private static float Delta(GameTime gameTime) {
             return (float) gameTime.ElapsedGameTime.TotalSeconds;
         }
 
         public static List<Planet> GetPlanets() {
             return _levels[_currLevel].Planets;
         }
-
+        
         public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
             float deltaTime = Delta(gameTime);
             currentKeys = keys;
             currentMouse = mouse;
 
             // update code
-            _player.Update(deltaTime, keys, mouse);
-            camera.Position = _player.pos - camera.Origin;
+            player.fullGrav(_levels[_currLevel].Planets);
+            
+            if (player.dead) player = CreatePlayer();
+            
+            player.Update(deltaTime, keys, mouse);
+            _camera.Position = player.pos - _camera.Origin;
+
 
             if (keys.pressed(Keys.O)) {
                 editMode ^= true;
             }
-
+            
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
@@ -66,16 +79,12 @@ namespace SpacePotato {
                 BlendState.NonPremultiplied,
                 SamplerState.PointClamp,
                 transformMatrix: _camera.CalculateViewMatrix());
-
+            
             // rendering code
+            player.Draw(spriteBatch);
 
-            foreach (var planet in planets) {
-                planet.Draw(spriteBatch);
-            }
-
-            _player.Draw(spriteBatch);
-            spriteBatch.Draw(testTexture, new Rectangle(500, 700, 100, 100), Color.White);
-
+            _levels[0].Draw(gameTime, spriteBatch);
+            
             // end
             spriteBatch.End();
         }

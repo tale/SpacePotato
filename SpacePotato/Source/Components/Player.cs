@@ -10,14 +10,13 @@ using SpacePotato.Source.Util;
 
 namespace SpacePotato {
     public class Player {
-        private short _health = 3;
-        private float _invincibilityTime = 1.5f;
-        
         public Texture2D texture;
         public Vector2 pos, vel, dimen;
         public float rot, scale;
 
         public Grapple grapple;
+
+        public bool dead;
 
         public Player(Vector2 pos) {
             texture = Loader.texture("Common/image");
@@ -25,21 +24,6 @@ namespace SpacePotato {
 
             this.pos = pos;
             dimen = new Vector2(50, 50);
-        }
-
-        public void CollideWithPlanet(float deltaTime) {
-            vel = new Vector2(-vel.X * 0.5f, -vel.Y * 0.5f); // TODO: Calculate velocity
-            
-            if (_invincibilityTime < 0) {
-                _health--;
-                grapple = null;
-                _invincibilityTime = 1.0f;
-                
-                if (_health == 0) {
-                    _health = 3;
-                    MainScreen.RecreatePlayer();
-                }
-            };
         }
 
 
@@ -54,7 +38,6 @@ namespace SpacePotato {
         }
 
         public void Update(float deltaTime, KeyInfo keys, MouseInfo mouse) {
-            _invincibilityTime -= deltaTime;
 
             float speed = (MainScreen.editMode) ? 1400 : 700;
             if (keys.down(Keys.A)) pos += deltaTime * Vector2.UnitX * -speed;
@@ -92,7 +75,7 @@ namespace SpacePotato {
                 
                 foreach (var planet in nearPlanets) {
                     if (Collision.rectCircle(pos, dimen/2, planet.pos, planet.radius)) { // TODO: un-scuff collision
-                        CollideWithPlanet(deltaTime);
+                        dead = true;
                     }
                 }
 
