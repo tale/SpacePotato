@@ -56,7 +56,7 @@ namespace SpacePotato {
 
             int particleCount = Util.randInt(10, 20);
             for (int i = 0; i < particleCount; i++) {
-                MainScreen.particlesOver.Add(new HurtParticle(pos + new Vector2(Util.randomPN(dimen.X/2), Util.randomPN(dimen.Y/2)), 
+                MainScreen.particlesOver.Add(new HurtParticle(Util.randomIn(pos, dimen), 
                     Util.polar(Util.random(0.4F, 1F) * Util.mag(vel), angle + Maths.PI + Util.randomPN(Maths.PI * 0.35F))));
             }
         }
@@ -108,7 +108,16 @@ namespace SpacePotato {
 
                 Vector2 grav = fullGrav(nearPlanets);
                 vel += grav * deltaTime;
-                if (keys.down(Keys.Space)) vel += Vector2.Normalize(grav * -1) * 1000 * deltaTime;
+                if (keys.down(Keys.Space)) {
+                    vel += Util.norm(grav) * -1000 * deltaTime;
+                    if (Util.chance(deltaTime * 30)) {
+                        float angle = Util.angle(grav);
+
+                        MainScreen.particlesOver.Add(new FireParticle(Util.randomIn(pos, dimen), 
+                            Util.polar(Util.random(0.5F, 1) * 200, angle + Util.randomPN(Maths.PI * 0.1F))));
+
+                    }
+                }
 
                 pos += vel * deltaTime;
 
