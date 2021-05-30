@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -17,7 +18,8 @@ namespace SpacePotato {
         public float VelocityStd { get; set; }
         public float AverageSpawnRate { get; set; }
 
-        public List<Asteroid> Asteroids {get; set; } = new List<Asteroid>(); 
+        [XmlIgnore]
+        public List<Asteroid> Asteroids = new List<Asteroid>(); 
         public AsteroidStream(Vector2 spawn, Vector2 despawn, float radius,
             float averageVelocity = 500F, float velocitySTD = 100F, float averageSpawnRate = 1F) {
 
