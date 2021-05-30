@@ -57,7 +57,7 @@ namespace SpacePotato {
 
             if (_health <= 0) {
                 _health = 3;
-                MainScreen.RecreatePlayer();
+                MainScreen.RecreatePlayer(true);
             }
 
             int particleCount = Util.randInt(10, 20);
