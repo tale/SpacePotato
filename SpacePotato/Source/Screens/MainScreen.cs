@@ -16,16 +16,21 @@ namespace SpacePotato {
         private static float _respawnTimeout;
         private const float maxRespawnTime = 0.5F;
         public static void RecreatePlayer(bool dead = false) {
-            Planet start = LevelManager.level.StartPlanet();
-            Vector2 startPos = (start == null) ? new Vector2(0, 0) : start.pos + (start.radius + 100) * Vector2.UnitX;
-            Vector2 startVel = (start == null) ? new Vector2(0, 0) : new Vector2(800, 0);
-            _player = null;
             if (dead) {
+                _player.health = 0;
                 _isRespawning = true;
             }
             else {
-                _player = new Player(startPos) {vel = startVel};
+                Planet start = LevelManager.level.StartPlanet();
+                Vector2 startVel = (start == null) ? new Vector2(0, 0) : new Vector2(800, 0);
+                _player = new Player(StartPos()) {vel = startVel};
             }
+        }
+
+        public static Vector2 StartPos() {
+            Planet start = LevelManager.level.StartPlanet();
+            Vector2 startPos = (start == null) ? new Vector2(0, 0) : start.pos + (start.radius + 100) * Vector2.UnitX;
+            return startPos;
         }
 
         // basic stuff
@@ -83,10 +88,15 @@ namespace SpacePotato {
                     _isRespawning = false;
                     _respawnTimeout = maxRespawnTime;
                 }
+                
+                float lerpVal = (maxRespawnTime - _respawnTimeout) / maxRespawnTime;
+                Camera.Position = Util.sinLerp(lerpVal, _player.pos, StartPos()) - Camera.Origin;
+
             }
             else {
                 _player.Update(deltaTime, keys, mouse);
-                if (_player != null) Camera.Position = _player.pos - Camera.Origin;
+                Camera.Position = _player.pos - Camera.Origin;
+                
             }
             
             particlesOver.Update(deltaTime);
@@ -148,9 +158,12 @@ namespace SpacePotato {
                 SamplerState.PointClamp,
                 transformMatrix: Camera.CalculateViewMatrix());
 
-           if (!_isRespawning)  _player.Render(spriteBatch);
+            if (!_isRespawning) _player.Render(spriteBatch);
+            
 
             particlesOver.Render(spriteBatch);
+            
+            _player.RenderUI(spriteBatch);
             // end
             spriteBatch.End();
         }

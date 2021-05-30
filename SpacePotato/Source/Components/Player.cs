@@ -16,7 +16,7 @@ namespace SpacePotato {
 
         public Grapple Grapple;
 
-        private short _health = 3;
+        public int health = 3;
         private float _invincibilityTime;
         private const float maxInvincibilityTime = 0.25F;
 
@@ -63,12 +63,12 @@ namespace SpacePotato {
         }
 
         public void Hurt(Planet planet, float angle, short subtractLives = 1) {
-            _health -= subtractLives;
+            health -= subtractLives;
             Grapple = null;
             _invincibilityTime = maxInvincibilityTime;
 
-            if (_health <= 0) {
-                _health = 3;
+            if (health <= 0) {
+                health = 3;
                 MainScreen.RecreatePlayer(true);
             }
 
@@ -91,12 +91,12 @@ namespace SpacePotato {
         }
         
         public void Hurt(Asteroid asteroid, float angle, short subtractLives = 1) {
-            _health -= subtractLives;
+            health -= subtractLives;
             Grapple = null;
             _invincibilityTime = maxInvincibilityTime;
 
-            if (_health <= 0) {
-                _health = 3;
+            if (health <= 0) {
+                health = 3;
                 MainScreen.RecreatePlayer();
             }
             
@@ -282,13 +282,6 @@ namespace SpacePotato {
             SpriteEffects effects = (toWorld.X - pos.X >= 0) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - dimen.X / 2F), (int)(pos.Y - dimen.Y / 2F), (int)dimen.X, (int)dimen.Y), null, Color.White,
                 0, Vector2.Zero, effects, 0);
-
-            for (int h = 0; h < 3; h++) {
-
-                Texture2D potatoHeart = (h < _health) ? heart : deadHeart;
-                spriteBatch.Draw(potatoHeart, new Rectangle(-530 + h * 100 + (int)Camera.Position.X, 
-                    -280 + (int)Camera.Position.Y, 64, 64), Color.White);
-            }
             
             if (MainScreen.EditMode) {
 
@@ -312,6 +305,15 @@ namespace SpacePotato {
                         RenderUtil.drawRect(despawn, spriteBatch, Color.Orange, 3);
                     }
                 }
+            }
+        }
+
+        public void RenderUI(SpriteBatch spriteBatch) {
+            for (int h = 0; h < 3; h++) {
+
+                Texture2D potatoHeart = (h < health) ? heart : deadHeart;
+                spriteBatch.Draw(potatoHeart, new Rectangle(-530 + h * 100 + (int)Camera.Position.X, 
+                    -280 + (int)Camera.Position.Y, 64, 64), Color.White);
             }
         }
     }
