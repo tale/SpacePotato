@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SpacePotato.Source.Util;
 
@@ -8,6 +9,7 @@ namespace SpacePotato {
         public float radius;
         public Player player;
         public Texture2D texture;
+        private const short _maxLength = 600;
         
         //if degrade = true then the grapple will cease to exist after a few seconds
         public bool hit, degrade = false;
@@ -25,6 +27,10 @@ namespace SpacePotato {
         public void Update(float deltaTime) {
 
             if (!hit) {
+                if (Util.mag(pos - player.pos) >= _maxLength) {
+                    player.Grapple = null;
+                }
+                
                 pos += vel * deltaTime;
                 
                 var nearPlanets = MainScreen.GetPlanets().FindAll(planet => Util.mag(pos - planet.pos) < 1000);

@@ -14,7 +14,7 @@ namespace SpacePotato {
         public Vector2 pos, vel, dimen;
         public float rot, scale;
 
-        private Grapple _grapple;
+        public Grapple Grapple;
 
         private short _health = 3;
         private float _invincibilityTime;
@@ -49,22 +49,22 @@ namespace SpacePotato {
             float velMag = Util.mag(vel);
             vel = Util.polar(Math.Max(velMag * 0.6F, 300), Util.angle(pos - planet.pos));
         }
-        /*public void CollideWithAsteroid(float deltaTime, AsteroidStream stream, Asteroid asteroid, short subtractLives = 1) {
+        public void CollideWithAsteroid(float deltaTime, AsteroidStream stream, Asteroid asteroid, short subtractLives = 1) {
 
             
             if (_invincibilityTime < 0 && !SpacePotatoGame.options.Godmode) {
-                Hurt(Util.angle(pos - asteroid.pos), subtractLives);
+                Hurt(asteroid, Util.angle(pos - asteroid.pos), subtractLives);
             }
             
             float velMag = Util.mag(vel);
             vel = Util.polar(Math.Max(velMag * 0.6F, 300), Util.angle(pos - asteroid.pos));
 
             stream.Asteroids.Remove(asteroid);
-        }*/
+        }
 
         public void Hurt(Planet planet, float angle, short subtractLives = 1) {
             _health -= subtractLives;
-            _grapple = null;
+            Grapple = null;
             _invincibilityTime = maxInvincibilityTime;
 
             if (_health <= 0) {
@@ -90,9 +90,9 @@ namespace SpacePotato {
             }
         }
         
-        /*public void Hurt(float angle, short subtractLives = 1) {
+        public void Hurt(Asteroid asteroid, float angle, short subtractLives = 1) {
             _health -= subtractLives;
-            _grapple = null;
+            Grapple = null;
             _invincibilityTime = maxInvincibilityTime;
 
             if (_health <= 0) {
@@ -100,7 +100,22 @@ namespace SpacePotato {
                 MainScreen.RecreatePlayer();
             }
             
-        }*/
+            int particleCount = Util.randInt(10, 20);
+            
+            for (int i = 0; i < particleCount; i++) {
+
+                MainScreen.particlesOver.Add(new HurtParticle(Util.randomIn(pos, dimen),
+                    Util.polar(Util.random(0.4F, 1F) * Util.mag(vel),
+                        angle + Maths.PI + Util.randomPN(Maths.PI * 0.35F))));
+                
+                MainScreen.particlesOver.Add(new FireParticle(Util.randomIn(pos, dimen),
+                    Util.polar(Util.random(0.4F, 1F) * Util.mag(asteroid.vel),
+                        Util.angle(asteroid.vel) + Util.randomPN(Maths.PI * 0.35F))));
+                
+
+            }
+            
+        }
 
         public Vector2 FullGrav(List<Planet> planets) {
             Vector2 grav = Vector2.Zero;
@@ -188,7 +203,7 @@ namespace SpacePotato {
             else {
                 var nearPlanets = MainScreen.GetPlanets().FindAll(planet => Util.mag(pos - planet.pos) < 1000);
 
-                /*//cursed but I suck at this type of code
+                //cursed but I suck at this type of code
                 List<(int, Asteroid)> nearAsteroids = new List<(int, Asteroid)>();
                 for (int n = 0; n < MainScreen.GetAsteroidStreams().Count; n++) {
                     for (int n2 = 0; n2 < MainScreen.GetAsteroidStreams()[n].Asteroids.Count; n2++) {
@@ -196,7 +211,7 @@ namespace SpacePotato {
                             nearAsteroids.Add((n, MainScreen.GetAsteroidStreams()[n].Asteroids[n2]));
                     }
 
-                }*/
+                }
 
                 Rectangle bounds = LevelManager.level.bounds;
                 if (!Collision.rect(pos, dimen, new Vector2(bounds.Center.X, bounds.Center.Y), new Vector2(bounds.Width, bounds.Height))) {
@@ -225,23 +240,23 @@ namespace SpacePotato {
                     }
                 }
 
-                /*for (int n = 0; n < nearAsteroids.Count; n++) {
+                for (int n = 0; n < nearAsteroids.Count; n++) {
                     if (Collision.rectCircle(pos, dimen/2, nearAsteroids[n].Item2.pos, nearAsteroids[n].Item2.radius)) { // TODO: un-scuff collision
-                        //CollideWithAsteroid(deltaTime, MainScreen.GetAsteroidStreams()[nearAsteroidsStreamType[n]],nearAsteroids[n], 1);
+                        CollideWithAsteroid(deltaTime, MainScreen.GetAsteroidStreams()[nearAsteroids[n].Item1],nearAsteroids[n].Item2, 1);
                     }
-                }*/
+                }
 
                 if (mouse.leftPressed) {
                     float angle = Util.angle(mouse.pos - Camera.screenCenter);
-                    _grapple = new Grapple(pos, Util.polar(3000, angle)) {player = this};
+                    Grapple = new Grapple(pos, Util.polar(3000, angle)) {player = this};
                 }
-                if (mouse.leftUnpressed) _grapple = null;
+                if (mouse.leftUnpressed) Grapple = null;
 
-                _grapple?.Update(deltaTime);
-                if (_grapple is { hit: true }) {
-                    vel += Util.polar(1000, Util.angle(_grapple.pos - pos)) * deltaTime;
-                    if (_grapple.DegradeTimer < 0)
-                        _grapple = null;
+                Grapple?.Update(deltaTime);
+                if (Grapple is { hit: true }) {
+                    vel += Util.polar(1000, Util.angle(Grapple.pos - pos)) * deltaTime;
+                    if (Grapple.DegradeTimer < 0)
+                        Grapple = null;
                 }
 
                 lastGrav = grav;
@@ -250,7 +265,7 @@ namespace SpacePotato {
 
         public void Render(SpriteBatch spriteBatch) {
 
-            _grapple?.Render(spriteBatch);
+            Grapple?.Render(spriteBatch);
 
             RenderUtil.drawLine(pos, pos + lastGrav / 3, spriteBatch, Color.Lerp(Color.Green, Color.Transparent, 0.25F), 4);
 
