@@ -11,6 +11,7 @@ namespace SpacePotato {
         public Texture2D texture;
         private const float _maxLength = 1800;
         public float strength = 100F;
+        public float hitLen;
         
         //if degrade = true then the grapple will cease to exist after a few seconds
         public bool hit, degrade = false;
@@ -27,6 +28,10 @@ namespace SpacePotato {
 
         public void Update(float deltaTime) {
 
+            if (hit && strength < 0 && Util.mag(pos - player.pos) - hitLen > 200) {
+                player.Grapple = null;
+            }
+            
             if (!hit) {
                 if (Util.mag(pos - player.pos) >= _maxLength) {
                     player.Grapple = null;
@@ -38,6 +43,7 @@ namespace SpacePotato {
                 foreach (var planet in nearPlanets) {
                     if (planet.GetType() != "Blackhole" && Collision.circle(planet.pos, planet.radius, pos, radius)) {
                         hit = true;
+                        hitLen = Util.mag(pos - player.pos);
                         pos = planet.pos + Util.polar(planet.radius, Util.angle(pos - planet.pos));
                         if (planet.GetType() == "Star") {
                             degrade = true;
