@@ -13,8 +13,7 @@ namespace SpacePotato {
         public int LevelID { get; set; }
 
 
-        private ParallaxLayer layer1;
-        private ParallaxLayer layer2;
+        private ParallaxLayer _layer1, _layer2, _starLayer;
 
         public Level() {}
 
@@ -24,8 +23,9 @@ namespace SpacePotato {
             }
             Rectangle bounds2 = new Rectangle(Bounds.Left - 500, Bounds.Top - 500,
                 Bounds.Width + 500, Bounds.Height + 1000);
-            layer1 = new ParallaxLayer(bounds2, 2, 100);
-            layer2 = new ParallaxLayer(bounds2, 3, 100);
+            _layer1 = new ParallaxLayer(bounds2, 2, 75);
+            _layer2 = new ParallaxLayer(bounds2, 3, 100);
+            _starLayer = new ParallaxLayer(bounds2, 5, 150, true);
         }
 
         public Level(List<Planet> planets, Rectangle bounds, int levelID) {
@@ -35,8 +35,9 @@ namespace SpacePotato {
 
             Rectangle bounds2 = new Rectangle(bounds.Left - 500, bounds.Top - 500,
                 bounds.Width + 500, bounds.Height + 1000);
-            layer1 = new ParallaxLayer(bounds2, 2, 100);
-            layer2 = new ParallaxLayer(bounds2, 3, 100);
+            _layer1 = new ParallaxLayer(bounds2, 2, 100);
+            _layer2 = new ParallaxLayer(bounds2, 3, 100);
+            _starLayer = new ParallaxLayer(bounds2, 5, 100, true);
         }
 
         public void Update(GameTime gameTime) {
@@ -45,8 +46,9 @@ namespace SpacePotato {
 
         public void Render(GameTime gameTime, SpriteBatch spriteBatch) {
             
-            layer2.Render(spriteBatch);
-            layer1.Render(spriteBatch);
+            _starLayer.Render(spriteBatch);
+            _layer2.Render(spriteBatch);
+            _layer1.Render(spriteBatch);
             
             
             foreach (Planet planet in Planets) {
