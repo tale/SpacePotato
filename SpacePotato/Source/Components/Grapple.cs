@@ -8,7 +8,11 @@ namespace SpacePotato {
         public float radius;
         public Player player;
         public Texture2D texture;
-        public bool hit;
+        
+        //if degrade = true then the grapple will cease to exist after a few seconds
+        public bool hit, degrade = false;
+
+        public float DegradeTimer { get; private set; } = .5f;
 
         public Grapple(Vector2 pos, Vector2 vel) {
             texture = Loader.texture("Common/mars_planet");
@@ -25,12 +29,17 @@ namespace SpacePotato {
                 
                 var nearPlanets = MainScreen.GetPlanets().FindAll(planet => Util.mag(pos - planet.pos) < 1000);
                 foreach (var planet in nearPlanets) {
-                    if (Collision.circle(planet.pos, planet.radius, pos, radius)) {
+                    if (planet.GetType() != "Blackhole" && Collision.circle(planet.pos, planet.radius, pos, radius)) {
                         hit = true;
                         pos = planet.pos + Util.polar(planet.radius, Util.angle(pos - planet.pos));
+                        if (planet.GetType() == "Star") {
+                            degrade = true;
+                        }
                     }
                 }
             }
+            else if (degrade)
+                DegradeTimer -= deltaTime;
         }
 
         public void Render(SpriteBatch spriteBatch) {
