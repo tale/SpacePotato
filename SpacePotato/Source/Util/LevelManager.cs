@@ -10,7 +10,7 @@ namespace SpacePotato {
         
         // Static level management
         private static Level[] _levels;
-        public static short CurrentLevel = 1;
+        public static short CurrentLevel = 5;
         public static Level level;
 
         public static void NextLevel() {
