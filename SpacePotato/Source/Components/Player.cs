@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpacePotato.Source.Editor;
 using SpacePotato.Source.Util;
+using SpacePotato.Source.World;
 
 namespace SpacePotato {
     public class Player {
@@ -167,8 +168,12 @@ namespace SpacePotato {
                         } else if (keys.down(Keys.D2)) {
                             planet = new Planet(worldMouse, Planet.StartEndRadius);
                             planet.setTypeIndex(Planet.EndType);
+                        } else if (keys.down(Keys.V)) {
+                            planet = new Star(worldMouse, Editor.radius * 2);
+                        } else if (keys.down(Keys.B)) {
+                            planet = new BlackHole(worldMouse, Editor.radius * 0.75F);
                         }
-                    
+
                         planets.Add(planet);
                         LevelManager.level.findBounds();
                     } else {
@@ -297,6 +302,8 @@ namespace SpacePotato {
 
                 float size = Editor.radius * 2;
                 if (Editor.mode == Editor.EditorMode.Asteroid) size *= 2;
+                if (Editor.mode == Editor.EditorMode.Planet && MainScreen.CurrentKeys.down(Keys.B)) size *= 0.75F;
+                if (Editor.mode == Editor.EditorMode.Planet && MainScreen.CurrentKeys.down(Keys.V)) size *= 2F;
                 Rectangle rect = Util.center(Util.toWorld(MainScreen.CurrentMouse.pos),
                     Vector2.One * size);
                 RenderUtil.drawRect(rect, spriteBatch, Color.Green, 3);
