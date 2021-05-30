@@ -17,21 +17,21 @@ namespace SpacePotato {
         public float mass { get; set; }
         public float angle { get; set; }
         public int typeIndex { get; set; }
-
-        public float Diameter => radius * 2;
-
+        
         public float X => pos.X;
 
         public float Y => pos.Y;
 
 
         public static Texture2D[] textures;
-
+        public const int StartType = 0, EndType = 1;
+        public const float StartEndRadius = 300;
+        
         static Planet() {
-            const int count = 6;
+            const int count = 8;
             textures = new Texture2D[count];
             for (int i = 0; i < count; i++) {
-                textures[i] = Loader.texture($"Common/Planet{i+1}");
+                textures[i] = Loader.texture($"Common/Planet{i}");
             }
         }
 
@@ -43,7 +43,7 @@ namespace SpacePotato {
             this.mass = mass;
             this.angle = angle;
 
-            typeIndex = Util.randInt(6);
+            typeIndex = Util.randInt(2, 8);
             texture = textures[typeIndex];
         }
 
@@ -53,11 +53,9 @@ namespace SpacePotato {
             texture = textures[typeIndex];
         }
 
-
-
-        public void Update(float deltaTime) {
-            //does nothing
-
+        public void setTypeIndex(int index) {
+            typeIndex = index;
+            texture = textures[typeIndex];
         }
 
         public Vector2 Gravity(Vector2 objectPosition) {
@@ -83,8 +81,8 @@ namespace SpacePotato {
         }
 
         public virtual void Render(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(texture, new Rectangle((int)(pos.X - radius), (int)(pos.Y - radius), (int) (radius * 2), (int) (radius * 2)), Color.White);
-        }
+            spriteBatch.Draw(texture, new Rectangle((int)(pos.X - radius), (int)(pos.Y - radius), (int) (Diameter), (int) (Diameter)), Color.White);
+
 
         public virtual string getType() {
             return "Planet";

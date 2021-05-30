@@ -12,7 +12,10 @@ namespace SpacePotato {
         // Static player instance
         private static Player _player;
         public static void RecreatePlayer() {
-            _player = new Player(new Vector2(0, 0));
+
+            Planet start = LevelManager.level.StartPlanet();
+            Vector2 startPos = start == null ? new Vector2(0, 0) : start.pos + (start.radius + 100) * Vector2.UnitX;
+            _player = new Player(startPos);
         }
 
         // basic stuff
@@ -54,8 +57,7 @@ namespace SpacePotato {
             // update code
             _player.Update(deltaTime, keys, mouse);
             Camera.Position = _player.pos - Camera.Origin;
-
-
+            
             particlesOver.Update(deltaTime);
             particlesUnder.Update(deltaTime);
             

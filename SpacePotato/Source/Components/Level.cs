@@ -12,9 +12,6 @@ namespace SpacePotato {
         public Rectangle Bounds { get; set; }
         public int LevelID { get; set; }
 
-        public Planet StartPlanet { get; set; }
-        public Planet ExitPlanet { get; set; }
-
         private ParallaxLayer _layer1, _layer2, _starLayer;
 
         public Level() {}
@@ -40,6 +37,14 @@ namespace SpacePotato {
             _layer1 = new ParallaxLayer(bounds2, 2, 100);
             _layer2 = new ParallaxLayer(bounds2, 3, 100);
             _starLayer = new ParallaxLayer(bounds2, 5, 100, true);
+        }
+
+        public Planet StartPlanet() {
+            return Planets.Find(planet => planet.typeIndex == Planet.StartType);
+        }
+        
+        public Planet EndPlanet() {
+            return Planets.Find(planet => planet.typeIndex == Planet.EndType);
         }
 
         public void Update(GameTime gameTime) {

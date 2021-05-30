@@ -15,19 +15,25 @@ namespace SpacePotato {
 
         public static void NextLevel() {
             _currentLevel = (short) ((_currentLevel + 1) % _levels.Length);
-            level = _levels[_currentLevel];
+            updateLevel();
         }
 
         public static void PreviousLevel() {
             _currentLevel--;
             if (_currentLevel == -1) _currentLevel = (short) (_levels.Length - 1);
-            level = _levels[_currentLevel];
+            updateLevel();
         }
 
         public static void ResetLevel() {
             _currentLevel = 0;
-            level = _levels[_currentLevel];
+            updateLevel();
         }
+
+        public static void updateLevel() {
+            level = _levels[_currentLevel];
+            MainScreen.RecreatePlayer();
+        }
+
         public static void LoadLevels() {
             string[] files = Directory.GetFiles(Paths.dataPath, "*.xml");
             _levels = new Level[files.Length + 1];
