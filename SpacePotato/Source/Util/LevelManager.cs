@@ -10,37 +10,40 @@ namespace SpacePotato {
         
         // Static level management
         public static Level[] _levels;
-        private static short _currentLevel;
+        public static short CurrentLevel = 1;
         public static Level level;
 
         public static void SetLevel(short index) {
-            _currentLevel = index;
+            CurrentLevel = index;
             updateLevel();
         }
 
         public static void NextLevel() {
-            _currentLevel = (short) ((_currentLevel + 1) % _levels.Length);
+            CurrentLevel = (short) ((CurrentLevel + 1) % _levels.Length);
             updateLevel();
         }
 
         public static void PreviousLevel() {
-            _currentLevel--;
-            if (_currentLevel == -1) _currentLevel = (short) (_levels.Length - 1);
+            CurrentLevel--;
+            if (CurrentLevel == -1) CurrentLevel = (short) (_levels.Length - 1);
             updateLevel();
         }
 
         public static void ResetLevel() {
-            _currentLevel = 0;
+            CurrentLevel = 0;
             updateLevel();
         }
 
         public static void updateLevel() {
-            level = _levels[_currentLevel];
+            level = _levels[CurrentLevel];
             MainScreen.RecreatePlayer();
         }
 
         public static void LoadLevels() {
             string[] files = Directory.GetFiles(Paths.dataPath, "*.xml");
+
+            files = files.AsEnumerable().OrderBy(f => f).ToArray();
+            
             _levels = new Level[files.Length + 1];
 
             // random debug level
@@ -64,14 +67,17 @@ namespace SpacePotato {
             
             
             _levels[0] = new Level(level1Planets, new Rectangle(-100, -1000, 6000, 2000), 1);
-
+            
             // file loaded levels
             for (int i = 1; i <= files.Length; i++) {
                 _levels[i] = DataSerializer.Deserialize<Level>(files[i-1]);
                 _levels[i].setUpSerialized();
+                
+                Console.WriteLine(files[i - 1]);
             }
 
-            level = _levels[_currentLevel];
+            level = _levels[CurrentLevel];
+            
         }
     }
 }

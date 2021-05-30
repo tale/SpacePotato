@@ -60,7 +60,7 @@ namespace SpacePotato {
                 maxY = 0;
             }
 
-            int diff = 1000;
+            int diff = 250;
             minX -= diff;
             minY -= diff;
             maxX += diff;

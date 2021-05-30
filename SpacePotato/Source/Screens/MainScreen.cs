@@ -128,7 +128,8 @@ namespace SpacePotato {
             if (keys.pressed(Keys.P)) {
                 int ID = Util.randInt(100, 10000);
                 Level level = new Level(GetPlanets(), LevelManager.level.bounds, ID) { AsteroidStreams = GetAsteroidStreams()};
-                DataSerializer.Serialize("LevelFileTest", level);
+                DataSerializer.Serialize("NewLevel", level);
+                Console.WriteLine("Saved");
             }
         }
 
