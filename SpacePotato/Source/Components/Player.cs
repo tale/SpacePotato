@@ -14,7 +14,7 @@ namespace SpacePotato {
         public Vector2 pos, vel, dimen;
         public float rot, scale;
 
-        private Grapple _grapple;
+        public Grapple Grapple;
 
         private short _health = 3;
         private float _invincibilityTime;
@@ -64,7 +64,7 @@ namespace SpacePotato {
 
         public void Hurt(Planet planet, float angle, short subtractLives = 1) {
             _health -= subtractLives;
-            _grapple = null;
+            Grapple = null;
             _invincibilityTime = maxInvincibilityTime;
 
             if (_health <= 0) {
@@ -92,7 +92,7 @@ namespace SpacePotato {
         
         public void Hurt(Asteroid asteroid, float angle, short subtractLives = 1) {
             _health -= subtractLives;
-            _grapple = null;
+            Grapple = null;
             _invincibilityTime = maxInvincibilityTime;
 
             if (_health <= 0) {
@@ -239,15 +239,15 @@ namespace SpacePotato {
 
                 if (mouse.leftPressed) {
                     float angle = Util.angle(mouse.pos - Camera.screenCenter);
-                    _grapple = new Grapple(pos, Util.polar(3000, angle)) {player = this};
+                    Grapple = new Grapple(pos, Util.polar(3000, angle)) {player = this};
                 }
-                if (mouse.leftUnpressed) _grapple = null;
+                if (mouse.leftUnpressed) Grapple = null;
 
-                _grapple?.Update(deltaTime);
-                if (_grapple is { hit: true }) {
-                    vel += Util.polar(1000, Util.angle(_grapple.pos - pos)) * deltaTime;
-                    if (_grapple.DegradeTimer < 0)
-                        _grapple = null;
+                Grapple?.Update(deltaTime);
+                if (Grapple is { hit: true }) {
+                    vel += Util.polar(1000, Util.angle(Grapple.pos - pos)) * deltaTime;
+                    if (Grapple.DegradeTimer < 0)
+                        Grapple = null;
                 }
 
                 lastGrav = grav;
@@ -256,7 +256,7 @@ namespace SpacePotato {
 
         public void Render(SpriteBatch spriteBatch) {
 
-            _grapple?.Render(spriteBatch);
+            Grapple?.Render(spriteBatch);
 
             RenderUtil.drawLine(pos, pos + lastGrav / 3, spriteBatch, Color.Lerp(Color.Green, Color.Transparent, 0.25F), 4);
 
