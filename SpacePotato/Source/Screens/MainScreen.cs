@@ -89,10 +89,10 @@ namespace SpacePotato {
 
             // rendering code
             particlesUnder.Render(spriteBatch);
-            
-            _player.Render(spriteBatch);
 
             LevelManager.level.Render(gameTime, spriteBatch);
+
+            _player.Render(spriteBatch);
 
             particlesOver.Render(spriteBatch);
             // end
