@@ -11,6 +11,11 @@ namespace SpacePotato {
 
         private static Random rand = new Random();
 
+
+        public static Vector2 norm(Vector2 vec) {
+            return polar(1, angle(vec));
+        }
+
         public static Vector2 toWorld(Vector2 mousePos) {
             return MainScreen.Camera.toWorld(mousePos);
         }
@@ -60,6 +65,10 @@ namespace SpacePotato {
             parVol += area(r3) / vol;
             if (chance <= parVol) return randomIn(r3);
             return randomIn(r4);
+        }
+
+        public static Vector2 randomIn(Vector2 pos, Vector2 dimen) {
+            return pos + new Vector2(randomPN(dimen.X / 2), randomPN(dimen.Y / 2));
         }
 
         public static Vector2 randomIn(Rectangle inside) {

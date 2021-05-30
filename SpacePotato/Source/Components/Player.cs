@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Runner;
 using SpacePotato.Source.Editor;
 using SpacePotato.Source.Util;
 
@@ -38,19 +36,29 @@ namespace SpacePotato {
         }
 
         public void CollideWithPlanet(float deltaTime, Planet planet) {
+            if (_invincibilityTime < 0) {
+                hurt(Util.angle(pos - planet.pos));
+            }
+            
             float velMag = Util.mag(vel);
             vel = Util.polar(Math.Max(velMag * 0.5F, 300), Util.angle(pos - planet.pos));
+        }
 
-            if (_invincibilityTime < 0) {
-                _health--;
-                _grapple = null;
-                _invincibilityTime = maxInvincibilityTime;
+        public void hurt(float angle) {
+            _health--;
+            _grapple = null;
+            _invincibilityTime = maxInvincibilityTime;
 
-                if (_health == 0) {
-                    _health = 3;
-                    MainScreen.RecreatePlayer();
-                }
-            };
+            if (_health == 0) {
+                _health = 3;
+                MainScreen.RecreatePlayer();
+            }
+
+            int particleCount = Util.randInt(10, 20);
+            for (int i = 0; i < particleCount; i++) {
+                MainScreen.particlesOver.Add(new HurtParticle(Util.randomIn(pos, dimen), 
+                    Util.polar(Util.random(0.4F, 1F) * Util.mag(vel), angle + Maths.PI + Util.randomPN(Maths.PI * 0.35F))));
+            }
         }
 
         public Vector2 FullGrav(List<Planet> planets) {
@@ -100,7 +108,16 @@ namespace SpacePotato {
 
                 Vector2 grav = FullGrav(nearPlanets);
                 vel += grav * deltaTime;
-                if (keys.down(Keys.Space)) vel += Vector2.Normalize(grav * -1) * 1000 * deltaTime;
+                if (keys.down(Keys.Space)) {
+                    vel += Util.norm(grav) * -1000 * deltaTime;
+                    if (Util.chance(deltaTime * 30)) {
+                        float angle = Util.angle(grav);
+
+                        MainScreen.particlesOver.Add(new FireParticle(Util.randomIn(pos, dimen), 
+                            Util.polar(Util.random(0.5F, 1) * 200, angle + Util.randomPN(Maths.PI * 0.1F))));
+
+                    }
+                }
 
                 pos += vel * deltaTime;
 

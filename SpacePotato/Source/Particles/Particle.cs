@@ -6,7 +6,7 @@ namespace SpacePotato {
         
         public Vector2 pos, vel, dimen;
         public Texture2D texture;
-        public float timeLeft;
+        public float timeLeft = 5;
         public bool delete;
 
         public Particle(Vector2 pos, Vector2 vel) {
