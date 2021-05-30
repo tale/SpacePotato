@@ -17,13 +17,14 @@ namespace SpacePotato {
         private const float maxRespawnTime = 0.5F;
         public static void RecreatePlayer(bool dead = false) {
             Planet start = LevelManager.level.StartPlanet();
-            Vector2 startPos = start == null ? new Vector2(0, 0) : start.pos + (start.radius + 100) * Vector2.UnitX;
+            Vector2 startPos = (start == null) ? new Vector2(0, 0) : start.pos + (start.radius + 100) * Vector2.UnitX;
+            Vector2 startVel = (start == null) ? new Vector2(0, 0) : new Vector2(800, 0);
             _player = null;
             if (dead) {
                 _isRespawning = true;
             }
             else {
-                _player = new Player(startPos);
+                _player = new Player(startPos) {vel = startVel};
             }
         }
 
@@ -99,6 +100,9 @@ namespace SpacePotato {
             if (keys.pressed(Keys.Left)) LevelManager.PreviousLevel();
             if (keys.pressed(Keys.Right)) LevelManager.NextLevel();
             
+            // game controls
+            if (keys.pressed(Keys.R)) RecreatePlayer(true);
+            
             // EDITOR CONTROLS
             if (keys.pressed(Keys.O)) {
                 EditMode ^= true;
@@ -112,7 +116,7 @@ namespace SpacePotato {
 
             if (keys.pressed(Keys.P)) {
                 int ID = Util.randInt(100, 10000);
-                Level level = new Level(GetPlanets(), LevelManager.level.Bounds, ID) { AsteroidStreams = GetAsteroidStreams()};
+                Level level = new Level(GetPlanets(), LevelManager.level.bounds, ID) { AsteroidStreams = GetAsteroidStreams()};
                 DataSerializer.Serialize("LevelFileTest", level);
             }
         }

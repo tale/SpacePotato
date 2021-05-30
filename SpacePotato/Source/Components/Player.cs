@@ -28,7 +28,7 @@ namespace SpacePotato {
         }
 
         public Player(Vector2 pos) {
-            texture = Loader.texture("Common/image");
+            texture = Loader.texture("Common/Potato");
             rot = 0F;
 
             this.pos = pos;
@@ -143,6 +143,7 @@ namespace SpacePotato {
                         }
                     
                         planets.Add(planet);
+                        LevelManager.level.findBounds();
                     } else {
                         float rad = Editor.radius * 2;
 
@@ -156,6 +157,7 @@ namespace SpacePotato {
                             var asteroidStreams = MainScreen.GetAsteroidStreams();
                             
                             asteroidStreams.Add(new AsteroidStream(Editor.firstAsteroidPos, worldMouse, rad));
+                            LevelManager.level.findBounds();
                         }
                     }
                 }
@@ -166,6 +168,7 @@ namespace SpacePotato {
                             var planet = planets[i];
                             if (Collision.pointCircle(worldMouse, planet.pos, planet.radius)) {
                                 planets.RemoveAt(i);
+                                LevelManager.level.findBounds();
                             }
                         }
                     } else {
@@ -175,6 +178,7 @@ namespace SpacePotato {
                             if (Collision.pointCircle(worldMouse, asteroidStream.spawn, asteroidStream.Radius) ||
                                 Collision.pointCircle(worldMouse, asteroidStream.despawn, asteroidStream.Radius)) {
                                 asteroidStreams.RemoveAt(i);
+                                LevelManager.level.findBounds();
                             }
                         }
                     }
@@ -193,6 +197,11 @@ namespace SpacePotato {
                     }
 
                 }*/
+
+                Rectangle bounds = LevelManager.level.bounds;
+                if (!Collision.rect(pos, dimen, new Vector2(bounds.Center.X, bounds.Center.Y), new Vector2(bounds.Width, bounds.Height))) {
+                    MainScreen.RecreatePlayer(true);
+                }
 
                 Vector2 grav = FullGrav(nearPlanets);
                 vel += grav * deltaTime;
