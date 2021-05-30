@@ -9,7 +9,8 @@ namespace SpacePotato {
         public float radius;
         public Player player;
         public Texture2D texture;
-        private const short _maxLength = 600;
+        private const float _maxLength = 1800;
+        public float strength = 100F;
         
         //if degrade = true then the grapple will cease to exist after a few seconds
         public bool hit, degrade = false;

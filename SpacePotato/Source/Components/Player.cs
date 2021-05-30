@@ -32,7 +32,7 @@ namespace SpacePotato {
             rot = 0F;
 
             this.pos = pos;
-            dimen = new Vector2(50, 50);
+            dimen = new Vector2(10, 16) / 16F * 80;
         }
 
         public void CollideWithPlanet(float deltaTime, Planet planet, short subtractLives = 1) {
@@ -130,12 +130,14 @@ namespace SpacePotato {
         public void Update(float deltaTime, KeyInfo keys, MouseInfo mouse) {
 
             _invincibilityTime -= deltaTime;
-            
-            float speed = (MainScreen.EditMode) ? 1400 : 700;
-            if (keys.down(Keys.A)) pos += deltaTime * Vector2.UnitX * -speed;
-            if (keys.down(Keys.D)) pos += deltaTime * Vector2.UnitX * speed;
-            if (keys.down(Keys.W)) pos += deltaTime * Vector2.UnitY * -speed;
-            if (keys.down(Keys.S)) pos += deltaTime * Vector2.UnitY * speed;
+
+            if (MainScreen.EditMode) {
+                float speed = 1400;
+                if (keys.down(Keys.A)) pos += deltaTime * Vector2.UnitX * -speed;
+                if (keys.down(Keys.D)) pos += deltaTime * Vector2.UnitX * speed;
+                if (keys.down(Keys.W)) pos += deltaTime * Vector2.UnitY * -speed;
+                if (keys.down(Keys.S)) pos += deltaTime * Vector2.UnitY * speed;
+            }
 
 
             if (MainScreen.EditMode) {
@@ -234,7 +236,7 @@ namespace SpacePotato {
                 pos += vel * deltaTime;
 
                 foreach (var planet in nearPlanets) {
-                    if (Collision.rectCircle(pos, dimen/2, planet.pos, planet.radius)) { // TODO: un-scuff collision
+                    if (Collision.rectCircle(pos, dimen/3, planet.pos, planet.radius)) { // TODO: un-scuff collision
                         short subtractLives = planet.GetType() == "Blackhole" ? (short)3 : (short)1;
                         CollideWithPlanet(deltaTime, planet, subtractLives);
                     }
@@ -248,13 +250,19 @@ namespace SpacePotato {
 
                 if (mouse.leftPressed) {
                     float angle = Util.angle(mouse.pos - Camera.screenCenter);
-                    Grapple = new Grapple(pos, Util.polar(3000, angle)) {player = this};
+                    Grapple = new Grapple(pos, Util.polar(3000, angle)) {player = this, strength = 1300};
                 }
-                if (mouse.leftUnpressed) Grapple = null;
+                if (mouse.leftUnpressed && Grapple != null && Grapple.strength > 0) Grapple = null;
+                
+                if (mouse.rightPressed) {
+                    float angle = Util.angle(mouse.pos - Camera.screenCenter);
+                    Grapple = new Grapple(pos, Util.polar(3000, angle)) {player = this, strength = -1500};
+                }
+                if (mouse.rightUnpressed && Grapple != null && Grapple.strength < 0) Grapple = null;
 
                 Grapple?.Update(deltaTime);
                 if (Grapple is { hit: true }) {
-                    vel += Util.polar(1000, Util.angle(Grapple.pos - pos)) * deltaTime;
+                    vel += Util.polar(Grapple.strength, Util.angle(Grapple.pos - pos)) * deltaTime;
                     if (Grapple.DegradeTimer < 0)
                         Grapple = null;
                 }
@@ -269,7 +277,11 @@ namespace SpacePotato {
 
             RenderUtil.drawLine(pos, pos + lastGrav / 3, spriteBatch, Color.Lerp(Color.Green, Color.Transparent, 0.25F), 4);
 
-            spriteBatch.Draw(texture, new Rectangle((int)(pos.X - dimen.X / 2F), (int)(pos.Y - dimen.Y / 2F), (int)dimen.X, (int)dimen.Y), Color.White);
+            Vector2 toWorld = MainScreen.Camera.toWorld(MainScreen.CurrentMouse.pos);
+            
+            SpriteEffects effects = (toWorld.X - pos.X >= 0) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            spriteBatch.Draw(texture, new Rectangle((int)(pos.X - dimen.X / 2F), (int)(pos.Y - dimen.Y / 2F), (int)dimen.X, (int)dimen.Y), null, Color.White,
+                0, Vector2.Zero, effects, 0);
 
             for (int h = 0; h < 3; h++) {
 

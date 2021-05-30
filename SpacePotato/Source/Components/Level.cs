@@ -48,10 +48,10 @@ namespace SpacePotato {
                 apply(planet.pos.X,planet.pos.Y, planet.radius);
             }
 
-            foreach (var asteroidStream in AsteroidStreams) {
+            /*foreach (var asteroidStream in AsteroidStreams) {
                 apply(asteroidStream.spawn.X, asteroidStream.spawn.Y, asteroidStream.Radius);
                 apply(asteroidStream.despawn.X, asteroidStream.despawn.Y, asteroidStream.Radius);
-            }
+            }*/
 
             if (!trigger) {
                 minX = 0;
@@ -113,7 +113,7 @@ namespace SpacePotato {
             }
             
 
-            RenderUtil.drawRect(bounds, spriteBatch, Color.White, 10);
+            RenderUtil.drawRect(bounds, spriteBatch, Color.Red, 10);
         }
     }
 }
