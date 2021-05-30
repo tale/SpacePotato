@@ -33,12 +33,12 @@ namespace SpacePotato {
 
     
     public static class DataSerializer {
-        public static void Serialize<T>(string fileName, T data) {
-            ObjectSerializer.Serialize<T>(Paths.dataPath + fileName + ".xml", data);
+        public static void Serialize<T>(string filePath, T data) {
+            ObjectSerializer.Serialize(filePath, data);
         }
         
-        public static T Deserialize<T>(string fileName) {
-            return ObjectSerializer.Deserialize<T>(Paths.dataPath + fileName + ".xml");
+        public static T Deserialize<T>(string filePath) {
+            return ObjectSerializer.Deserialize<T>(filePath);
         }
     }
 }

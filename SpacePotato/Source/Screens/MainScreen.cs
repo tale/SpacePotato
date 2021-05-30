@@ -4,9 +4,12 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpacePotato.Source.Util;
 
 namespace SpacePotato {
     public class MainScreen : GameScreen {
+        
+        // Static player instance
         private static Player _player;
         public static void RecreatePlayer() {
             _player = new Player(new Vector2(0, 0));
@@ -25,27 +28,12 @@ namespace SpacePotato {
         // settings and booleans
         public static bool EditMode;
 
-        // level stuff
-        private static Level[] _levels;
-        public static Level level => _levels[_currLevel];
-
-        private static int _currLevel = 0;
-
-
         public MainScreen(Game game, int screenId) : base(game, screenId) {
-
+            LevelManager.LoadLevels();
             Camera = new Camera(SpacePotatoGame.getGraphicsDevice().Viewport);
 
             RecreatePlayer();
-
-            var level1Planets = Enumerable.Range(0, 50).
-                Select(i => new Planet(new Vector2(Util.random(-100, 5900),
-                    Util.random(-1000, 1000)), 100)).ToList();
-
-            _levels = new[] {
-                new Level(level1Planets, new Rectangle(-100, -1000, 6000, 2000), 1),
-            };
-
+            
             particlesOver = new ParticleSystem();
             particlesUnder = new ParticleSystem();
         }
@@ -55,7 +43,7 @@ namespace SpacePotato {
         }
 
         public static List<Planet> GetPlanets() {
-            return level.Planets;
+            return LevelManager.Level.Planets;
         }
 
         public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
@@ -81,12 +69,7 @@ namespace SpacePotato {
 
             if (keys.pressed(Keys.P)) {
                 int ID = Util.randInt(100, 10000);
-                DataSerializer.Serialize($"LevelFileTest", new Level(GetPlanets(), level.Bounds, ID));
-            }
-
-            if (keys.pressed(Keys.L)) {
-                _levels[_currLevel] = DataSerializer.Deserialize<Level>("LevelFileTest");
-                level.setUpSerialized();
+                DataSerializer.Serialize($"LevelFileTest", new Level(GetPlanets(), LevelManager.Level.Bounds, ID));
             }
         }
 
@@ -102,7 +85,7 @@ namespace SpacePotato {
             
             _player.Render(spriteBatch);
 
-            _levels[0].Render(gameTime, spriteBatch);
+            LevelManager.Level.Render(gameTime, spriteBatch);
 
             particlesOver.Render(spriteBatch);
             // end
