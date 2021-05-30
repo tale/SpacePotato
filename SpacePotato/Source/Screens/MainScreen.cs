@@ -12,10 +12,18 @@ namespace SpacePotato {
         
         // Static player instance
         private static Player _player;
-        public static void RecreatePlayer() {
+        private static Boolean _isRespawning;
+        private static float _respawnTimeout = 2.5f;
+        public static void RecreatePlayer(bool completion = false) {
             Planet start = LevelManager.level.StartPlanet();
             Vector2 startPos = start == null ? new Vector2(0, 0) : start.pos + (start.radius + 100) * Vector2.UnitX;
-            _player = new Player(startPos);
+            _player = null;
+            if (!completion) {
+                _isRespawning = true;
+            }
+            else {
+                _player = new Player(startPos);
+            }
         }
 
         // basic stuff
@@ -35,7 +43,7 @@ namespace SpacePotato {
             LevelManager.LoadLevels();
             Camera = new Camera(SpacePotatoGame.getGraphicsDevice().Viewport);
 
-            RecreatePlayer();
+            RecreatePlayer(true);
             
             particlesOver = new ParticleSystem();
             particlesUnder = new ParticleSystem();
@@ -55,12 +63,23 @@ namespace SpacePotato {
 
         public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
             float deltaTime = Delta(gameTime);
+
             CurrentKeys = keys;
             CurrentMouse = mouse;
 
             // update code
-            _player.Update(deltaTime, keys, mouse);
-            Camera.Position = _player.pos - Camera.Origin;
+            if (_isRespawning) {
+                _respawnTimeout -= deltaTime;
+                if (_respawnTimeout <= 0) {
+                    RecreatePlayer(true);
+                    _isRespawning = false;
+                    _respawnTimeout = 2.5f;
+                }
+            }
+            else {
+                _player.Update(deltaTime, keys, mouse);
+                if (_player != null) Camera.Position = _player.pos - Camera.Origin;
+            }
             
             particlesOver.Update(deltaTime);
             particlesUnder.Update(deltaTime);
@@ -103,7 +122,7 @@ namespace SpacePotato {
 
             LevelManager.level.Render(gameTime, spriteBatch);
 
-            _player.Render(spriteBatch);
+           if (!_isRespawning)  _player.Render(spriteBatch);
 
             particlesOver.Render(spriteBatch);
             // end
