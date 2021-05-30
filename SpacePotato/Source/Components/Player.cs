@@ -43,6 +43,7 @@ namespace SpacePotato {
         public void CollideWithPlanet(float deltaTime, Planet planet, short subtractLives = 1) {
 
             if (planet.typeIndex == Planet.EndType) {
+                hurtSound();
                 LevelManager.NextLevel();
                 return;
             }

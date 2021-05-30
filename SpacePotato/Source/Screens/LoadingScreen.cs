@@ -5,6 +5,7 @@ namespace SpacePotato {
     public class LoadingScreen : GameScreen {
         private readonly Spinner _spinner;
         private readonly SpriteFont _titleFont;
+        public float timePassed, maxTimePassed = 1F;
 
         public LoadingScreen(Game game, int screenId) : base(game, screenId) {
             _titleFont = ContentManager.Load<SpriteFont>("Fonts/Title");
@@ -13,6 +14,11 @@ namespace SpacePotato {
 
         public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
             _spinner.Update(gameTime);
+            float deltaTime = (float) gameTime.ElapsedGameTime.TotalSeconds;
+
+            timePassed += deltaTime;
+            
+            if (timePassed >= maxTimePassed) ScreenManager.SwitchScreen(2);
         }
 
         public override void BasicDraw(GameTime gameTime, SpriteBatch spriteBatch) {
