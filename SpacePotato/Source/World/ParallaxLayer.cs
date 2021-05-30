@@ -14,17 +14,15 @@ using Microsoft.Xna.Framework.Graphics;
         private readonly int _scaler, _density;
 
         private readonly Rectangle _bounds;
+
+        private bool _starLayer;
         
         public Image[] ParallaxImages { get; }
 
         private static Texture2D[] _textures;
+        private static Texture2D _star;
 
-        public ParallaxLayer(Rectangle bounds, int scaler, int density) {
-            
-            _scaler = scaler;
-            _density = density;
-            _bounds = bounds;
-
+        static ParallaxLayer() {
             _textures = new[] {
                 Loader.texture("Common/Planet1"),
                 Loader.texture("Common/Planet2"),
@@ -33,7 +31,16 @@ using Microsoft.Xna.Framework.Graphics;
                 Loader.texture("Common/Planet5"),
                 Loader.texture("Common/Planet6"),
             };
+
+            _star = Loader.texture("Common/Star");
+        }
+        public ParallaxLayer(Rectangle bounds, int scaler, int density, bool starLayer = false) {
             
+            _scaler = scaler;
+            _density = density;
+            _bounds = bounds;
+            _starLayer = starLayer;
+
             ParallaxImages = GeneratePlanetImageMap();
         }
 
@@ -56,7 +63,12 @@ using Microsoft.Xna.Framework.Graphics;
 
                 if (CheckPrevious(x, y, previous)) {
                     
-                    array[number] = new Image(_bounds.Left + x, _bounds.Top + y, 84f / _scaler, 84f / _scaler, image);
+                    if (!_starLayer)
+                        array[number] = new Image(_bounds.Left + x, _bounds.Top + y, 
+                            84f / _scaler, 84f / _scaler, image);
+                    else
+                        array[number] = new Image(_bounds.Left + x, _bounds.Top + y, 
+                            40f / _scaler, 40f / _scaler, _star);
 
                     previous.Add((x, y));
                     number++;

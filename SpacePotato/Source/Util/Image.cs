@@ -21,8 +21,9 @@ namespace SpacePotato.Source.Util {
                 _texture = texture;
             }
             public void Render(SpriteBatch spriteBatch, int scaler = 1) {
-                
-                int moveScalar = (scaler == 2) ? 3 : 2;
+
+                float moveScalar = (scaler == 2) ? 4 : 3;
+                moveScalar = scaler == 5 ? 2f : moveScalar;
                 spriteBatch.Draw(_texture, new Rectangle(
                     (int)(_position.X - _dimensions.X / 2 + Camera.Position.X / moveScalar),
                     (int)(_position.Y - _dimensions.Y / 2 + Camera.Position.Y / moveScalar),
