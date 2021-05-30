@@ -224,3 +224,9 @@
 /processorParam:TextureFormat=Color
 /build:Images/Common/Sun.png
 
+#begin Shaders/Planet.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Shaders/Planet.fx
+

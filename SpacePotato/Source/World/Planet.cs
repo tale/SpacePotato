@@ -49,7 +49,7 @@ namespace SpacePotato {
 
         public Planet() {}
 
-        public void setUpSerialized() {
+        public virtual void setUpSerialized() {
             texture = textures[typeIndex];
         }
 

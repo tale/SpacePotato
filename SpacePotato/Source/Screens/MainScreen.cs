@@ -12,13 +12,14 @@ namespace SpacePotato {
         
         // Static player instance
         private static Player _player;
-        private static Boolean _isRespawning;
-        private static float _respawnTimeout = 2.5f;
-        public static void RecreatePlayer(bool completion = false) {
+        private static bool _isRespawning;
+        private static float _respawnTimeout;
+        private const float maxRespawnTime = 0.5F;
+        public static void RecreatePlayer(bool dead = false) {
             Planet start = LevelManager.level.StartPlanet();
             Vector2 startPos = start == null ? new Vector2(0, 0) : start.pos + (start.radius + 100) * Vector2.UnitX;
             _player = null;
-            if (!completion) {
+            if (dead) {
                 _isRespawning = true;
             }
             else {
@@ -38,15 +39,20 @@ namespace SpacePotato {
 
         // settings and booleans
         public static bool EditMode;
+        
+        // shaders
+        public static Effect planetShader;
 
         public MainScreen(Game game, int screenId) : base(game, screenId) {
             LevelManager.LoadLevels();
             Camera = new Camera(SpacePotatoGame.getGraphicsDevice().Viewport);
 
-            RecreatePlayer(true);
+            RecreatePlayer();
             
             particlesOver = new ParticleSystem();
             particlesUnder = new ParticleSystem();
+            
+            planetShader = ContentManager.Load<Effect>("Shaders/Planet");
         }
 
         private static float Delta(GameTime gameTime) {
@@ -71,9 +77,9 @@ namespace SpacePotato {
             if (_isRespawning) {
                 _respawnTimeout -= deltaTime;
                 if (_respawnTimeout <= 0) {
-                    RecreatePlayer(true);
+                    RecreatePlayer();
                     _isRespawning = false;
-                    _respawnTimeout = 2.5f;
+                    _respawnTimeout = maxRespawnTime;
                 }
             }
             else {
@@ -105,7 +111,8 @@ namespace SpacePotato {
 
             if (keys.pressed(Keys.P)) {
                 int ID = Util.randInt(100, 10000);
-                DataSerializer.Serialize($"LevelFileTest", new Level(GetPlanets(), LevelManager.level.Bounds, ID));
+                Level level = new Level(GetPlanets(), LevelManager.level.Bounds, ID) { AsteroidStreams = GetAsteroidStreams()};
+                DataSerializer.Serialize("LevelFileTest", level);
             }
         }
 
@@ -114,7 +121,8 @@ namespace SpacePotato {
             spriteBatch.Begin(SpriteSortMode.Deferred,
                 BlendState.NonPremultiplied,
                 SamplerState.PointClamp,
-                transformMatrix: Camera.CalculateViewMatrix());
+                transformMatrix: Camera.CalculateViewMatrix(),
+                effect: planetShader);
 
             // rendering code
             particlesUnder.Render(spriteBatch);

@@ -69,7 +69,7 @@ namespace SpacePotato {
 
             if (_health <= 0) {
                 _health = 3;
-                MainScreen.RecreatePlayer();
+                MainScreen.RecreatePlayer(true);
             }
 
             if (planet.GetType() != "Blackhole") {
