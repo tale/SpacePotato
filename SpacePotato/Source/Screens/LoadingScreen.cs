@@ -16,11 +16,11 @@ namespace SpacePotato {
         }
 
         public override void BasicDraw(GameTime gameTime, SpriteBatch spriteBatch) {
-            var (x, _) = _titleFont.MeasureString("SpacePotato");
+            var (x, _) = _titleFont.MeasureString("Grapple");
             var viewport = spriteBatch.GraphicsDevice.Viewport;
 
             _spinner.Render(gameTime, spriteBatch, new Vector2(viewport.Width - 40F, viewport.Height - 40F), 0.1F);
-            spriteBatch.DrawString(_titleFont, "SpacePotato", new Vector2(viewport.Width / 2F, viewport.Height / 4F),
+            spriteBatch.DrawString(_titleFont, "Grapple", new Vector2(viewport.Width / 2F, viewport.Height / 4F),
                 Color.White, 0, new Vector2(x / 2, 0), Vector2.One, SpriteEffects.None, 0);
         }
     }

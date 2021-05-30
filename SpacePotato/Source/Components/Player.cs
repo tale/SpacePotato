@@ -237,7 +237,7 @@ namespace SpacePotato {
 
                 Vector2 grav = FullGrav(nearPlanets);
                 vel += grav * deltaTime;
-                if (keys.down(Keys.Space)) {
+                /*if (keys.down(Keys.Space)) {
                     vel += Util.norm(grav) * -1000 * deltaTime;
                     if (Util.chance(deltaTime * 30)) {
                         float angle = Util.angle(grav);
@@ -246,7 +246,7 @@ namespace SpacePotato {
                             Util.polar(Util.random(0.5F, 1) * 200, angle + Util.randomPN(Maths.PI * 0.1F))));
 
                     }
-                }
+                }*/
 
                 pos += vel * deltaTime;
 
@@ -294,7 +294,7 @@ namespace SpacePotato {
 
             Vector2 toWorld = MainScreen.Camera.toWorld(MainScreen.CurrentMouse.pos);
             
-            SpriteEffects effects = (toWorld.X - pos.X >= 0) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            SpriteEffects effects = (toWorld.X - pos.X <= 0) ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - dimen.X / 2F), (int)(pos.Y - dimen.Y / 2F), (int)dimen.X, (int)dimen.Y), null, Color.White,
                 0, Vector2.Zero, effects, 0);
             
