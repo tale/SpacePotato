@@ -16,8 +16,8 @@ namespace SpacePotato {
         public float AverageVelocity { get; set; }
         public float VelocityStd { get; set; }
         public float AverageSpawnRate { get; set; }
-        
-        private List<Asteroid> _asteroids = new List<Asteroid>();
+
+        public List<Asteroid> Asteroids {get; set; } = new List<Asteroid>(); 
         public AsteroidStream(Vector2 spawn, Vector2 despawn, float radius,
             float averageVelocity = 500F, float velocitySTD = 100F, float averageSpawnRate = 1F) {
 
@@ -52,19 +52,19 @@ namespace SpacePotato {
                     //float velocityMagnitude = (float)(AverageVelocity + (Random.NextDouble() - .5f) * 2 * VelocityStd);
                     float velocityMagnitude = 500;
                         
-                    _asteroids.Add(new Asteroid(new Vector2(
+                    Asteroids.Add(new Asteroid(new Vector2(
                         spawn.X + (float)(range * Math.Cos(angle)), 
                         spawn.Y + (float)(range * Math.Sin(angle))), Util.polar(velocityMagnitude, _asteroidVelocityAngle), 
                         24));
                 //}
             }
 
-            for (int n = 0; n < _asteroids.Count; n++) {
+            for (int n = 0; n < Asteroids.Count; n++) {
 
-                _asteroids[n].Update(deltaTime);
+                Asteroids[n].Update(deltaTime);
                 
-                if (Despawn(_asteroids[n])) {
-                    _asteroids.RemoveAt(n);
+                if (Despawn(Asteroids[n])) {
+                    Asteroids.RemoveAt(n);
                     n--;
                 }
             }
@@ -72,7 +72,7 @@ namespace SpacePotato {
 
         public void Render(SpriteBatch spriteBatch) {
 
-            foreach (Asteroid asteroid in _asteroids) {
+            foreach (Asteroid asteroid in Asteroids) {
                 asteroid.Render(spriteBatch);
             }
         }
@@ -84,7 +84,7 @@ namespace SpacePotato {
 
         private bool Spawn() {
 
-            foreach (Asteroid asteroid in _asteroids) {
+            foreach (Asteroid asteroid in Asteroids) {
 
                 if (Util.mag(new Vector2(
                         asteroid.pos.X - despawn.X,

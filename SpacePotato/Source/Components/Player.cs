@@ -49,6 +49,18 @@ namespace SpacePotato {
             float velMag = Util.mag(vel);
             vel = Util.polar(Math.Max(velMag * 0.6F, 300), Util.angle(pos - planet.pos));
         }
+        /*public void CollideWithAsteroid(float deltaTime, AsteroidStream stream, Asteroid asteroid, short subtractLives = 1) {
+
+            
+            if (_invincibilityTime < 0 && !SpacePotatoGame.options.Godmode) {
+                Hurt(Util.angle(pos - asteroid.pos), subtractLives);
+            }
+            
+            float velMag = Util.mag(vel);
+            vel = Util.polar(Math.Max(velMag * 0.6F, 300), Util.angle(pos - asteroid.pos));
+
+            stream.Asteroids.Remove(asteroid);
+        }*/
 
         public void Hurt(Planet planet, float angle, short subtractLives = 1) {
             _health -= subtractLives;
@@ -77,6 +89,18 @@ namespace SpacePotato {
                 //TODO gilberize player
             }
         }
+        
+        /*public void Hurt(float angle, short subtractLives = 1) {
+            _health -= subtractLives;
+            _grapple = null;
+            _invincibilityTime = maxInvincibilityTime;
+
+            if (_health <= 0) {
+                _health = 3;
+                MainScreen.RecreatePlayer();
+            }
+            
+        }*/
 
         public Vector2 FullGrav(List<Planet> planets) {
             Vector2 grav = Vector2.Zero;
@@ -160,6 +184,16 @@ namespace SpacePotato {
             else {
                 var nearPlanets = MainScreen.GetPlanets().FindAll(planet => Util.mag(pos - planet.pos) < 1000);
 
+                /*//cursed but I suck at this type of code
+                List<(int, Asteroid)> nearAsteroids = new List<(int, Asteroid)>();
+                for (int n = 0; n < MainScreen.GetAsteroidStreams().Count; n++) {
+                    for (int n2 = 0; n2 < MainScreen.GetAsteroidStreams()[n].Asteroids.Count; n2++) {
+                        if (Util.mag(pos - MainScreen.GetAsteroidStreams()[n].Asteroids[n2].pos) < 1000)
+                            nearAsteroids.Add((n, MainScreen.GetAsteroidStreams()[n].Asteroids[n2]));
+                    }
+
+                }*/
+
                 Vector2 grav = FullGrav(nearPlanets);
                 vel += grav * deltaTime;
                 if (keys.down(Keys.Space)) {
@@ -181,6 +215,12 @@ namespace SpacePotato {
                         CollideWithPlanet(deltaTime, planet, subtractLives);
                     }
                 }
+
+                /*for (int n = 0; n < nearAsteroids.Count; n++) {
+                    if (Collision.rectCircle(pos, dimen/2, nearAsteroids[n].Item2.pos, nearAsteroids[n].Item2.radius)) { // TODO: un-scuff collision
+                        //CollideWithAsteroid(deltaTime, MainScreen.GetAsteroidStreams()[nearAsteroidsStreamType[n]],nearAsteroids[n], 1);
+                    }
+                }*/
 
                 if (mouse.leftPressed) {
                     float angle = Util.angle(mouse.pos - Camera.screenCenter);
