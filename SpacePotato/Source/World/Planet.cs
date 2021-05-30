@@ -9,7 +9,7 @@ namespace SpacePotato {
         
         private const float GravityStrengthModifier = .065f, GravityFalloffModifier = .0083f;
 
-        private const float _planetMass = 10000;
+        private const float PlanetMass = 10000;
 
         [XmlIgnore]
         public Texture2D texture;
@@ -35,7 +35,7 @@ namespace SpacePotato {
             }
         }
 
-        public Planet(Vector2 pos, float radius, float mass = _planetMass, float angle = 0) {
+        public Planet(Vector2 pos, float radius, float mass = PlanetMass, float angle = 0) {
 
             this.radius = radius;
             this.pos = pos;
@@ -67,7 +67,7 @@ namespace SpacePotato {
             if (Math.Sqrt(Math.Pow(pos.X - x, 2) + Math.Pow(pos.Y - y, 2)) > 1000)
                 return Vector2.Zero;
 
-            float acceleration = (float)(GravityStrengthModifier * _planetMass /
+            float acceleration = (float)(GravityStrengthModifier * PlanetMass /
                                          (Math.Pow((pos.X - x) * GravityFalloffModifier, 2) + 
                                           Math.Pow((pos.Y - y) * GravityFalloffModifier, 2)));
 
@@ -82,8 +82,12 @@ namespace SpacePotato {
             return new Vector2((float)(acceleration * Math.Cos(angle)), (float)(acceleration * Math.Sin(angle)));
         }
 
-        public void Render(SpriteBatch spriteBatch) {
+        public virtual void Render(SpriteBatch spriteBatch) {
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - radius), (int)(pos.Y - radius), (int) (radius * 2), (int) (radius * 2)), Color.White);
+        }
+
+        public virtual string getType() {
+            return "Planet";
         }
     }
 }

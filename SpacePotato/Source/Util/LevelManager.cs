@@ -1,6 +1,9 @@
+using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using SpacePotato.Source.World;
 
 namespace SpacePotato {
     public class LevelManager {
@@ -30,9 +33,25 @@ namespace SpacePotato {
             _levels = new Level[files.Length + 1];
 
             // random debug level
-            var level1Planets = Enumerable.Range(0, 50).
-                Select(i => new Planet(new Vector2(Util.random(-100, 5900),
-                    Util.random(-1000, 1000)), 100)).ToList();
+            List<Planet> level1Planets = new List<Planet>();
+            for (int n = 0; n < 50; n++) {
+
+                int planetType = Util.randInt(0, 10);
+                
+                if (planetType == 1) 
+                    level1Planets.Add(new BlackHole(new Vector2(Util.random(-100, 5900),
+                    Util.random(-1000, 1000)), 75));
+                
+                else if (planetType == 2)
+                    level1Planets.Add(new Star(new Vector2(Util.random(-100, 5900),
+                        Util.random(-1000, 1000)), 200));
+                
+                else
+                    level1Planets.Add(new Planet(new Vector2(Util.random(-100, 5900),
+                        Util.random(-1000, 1000)), 100));
+            }
+            
+            
             _levels[0] = new Level(level1Planets, new Rectangle(-100, -1000, 6000, 2000), 1);
 
             // file loaded levels
