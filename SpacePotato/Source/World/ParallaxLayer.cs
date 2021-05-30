@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
   using SpacePotato.Source.Util;
 
 
-  namespace SpacePotato.Source.World {
+  namespace SpacePotato {
     public class ParallaxLayer {
 
         private static readonly Random Random = new Random();
@@ -19,11 +19,11 @@ using Microsoft.Xna.Framework.Graphics;
         
         public Image[] ParallaxImages { get; }
 
-        private static Texture2D[] _textures;
-        private static Texture2D _star;
+        private static readonly Texture2D[] Textures;
+        private static readonly Texture2D SmallStar, BigStar, Blackhole;
 
         static ParallaxLayer() {
-            _textures = new[] {
+            Textures = new[] {
                 Loader.texture("Common/Planet1"),
                 Loader.texture("Common/Planet2"),
                 Loader.texture("Common/Planet3"),
@@ -32,7 +32,9 @@ using Microsoft.Xna.Framework.Graphics;
                 Loader.texture("Common/Planet6"),
             };
 
-            _star = Loader.texture("Common/Star");
+            SmallStar = Loader.texture("Common/Star");
+            BigStar = Loader.texture("Common/Sun");
+            Blackhole = Loader.texture("Common/Blackhole");
         }
         public ParallaxLayer(Rectangle bounds, int scaler, int density, bool starLayer = false) {
             
@@ -59,16 +61,30 @@ using Microsoft.Xna.Framework.Graphics;
                 var y = Random.Next(_bounds.Height);
 
                 int text = (int) (Random.NextDouble() * 6);
-                Texture2D image = _textures[text];
+                Texture2D image = Textures[text];
+
+                int planetType = Util.randInt(0, 10);
+
+                float radius = 84;
+
+                if (planetType == 0) {
+                    radius = 64;
+                    image = Blackhole;
+                }
+
+                else if (planetType == 1) {
+                    radius = 196;
+                    image = BigStar;
+                }
 
                 if (CheckPrevious(x, y, previous)) {
                     
                     if (!_starLayer)
                         array[number] = new Image(_bounds.Left + x, _bounds.Top + y, 
-                            84f / _scaler, 84f / _scaler, image);
+                            radius / _scaler, radius / _scaler, image);
                     else
                         array[number] = new Image(_bounds.Left + x, _bounds.Top + y, 
-                            40f / _scaler, 40f / _scaler, _star);
+                            40f / _scaler, 40f / _scaler, SmallStar);
 
                     previous.Add((x, y));
                     number++;
