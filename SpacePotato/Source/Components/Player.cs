@@ -35,27 +35,27 @@ namespace SpacePotato {
             dimen = new Vector2(50, 50);
         }
 
-        public void CollideWithPlanet(float deltaTime, Planet planet) {
+        public void CollideWithPlanet(float deltaTime, Planet planet, short subtractLives = 1) {
 
             if (planet.typeIndex == Planet.EndType) {
                 LevelManager.NextLevel();
                 return;
             }
 
-            if (_invincibilityTime < 0) {
-                hurt(Util.angle(pos - planet.pos));
+            if (_invincibilityTime < 0 && !SpacePotatoGame.options.Godmode) {
+                hurt(Util.angle(pos - planet.pos), subtractLives);
             }
             
             float velMag = Util.mag(vel);
             vel = Util.polar(Math.Max(velMag * 0.6F, 300), Util.angle(pos - planet.pos));
         }
 
-        public void hurt(float angle) {
-            _health--;
+        public void hurt(float angle, short subtractLives = 1) {
+            _health -= subtractLives;
             _grapple = null;
             _invincibilityTime = maxInvincibilityTime;
 
-            if (_health == 0) {
+            if (_health <= 0) {
                 _health = 3;
                 MainScreen.RecreatePlayer();
             }
@@ -166,7 +166,8 @@ namespace SpacePotato {
 
                 foreach (var planet in nearPlanets) {
                     if (Collision.rectCircle(pos, dimen/2, planet.pos, planet.radius)) { // TODO: un-scuff collision
-                        CollideWithPlanet(deltaTime, planet);
+                        short subtractLives = planet.GetType() == "Blackhole" ? (short)3 : (short)1;
+                        CollideWithPlanet(deltaTime, planet, subtractLives);
                     }
                 }
 

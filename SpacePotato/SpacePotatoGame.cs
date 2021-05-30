@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 namespace SpacePotato {
     public class SpacePotatoGame : Game {
         private readonly GraphicsDeviceManager _graphics;
-        private readonly Options _options;
+        public static Options options;
         private readonly ScreenManager _screenManager;
         private SpriteBatch _spriteBatch;
 
@@ -19,7 +19,7 @@ namespace SpacePotato {
             _graphics = new GraphicsDeviceManager(this);
             _screenManager = new ScreenManager(this, 1);
             
-            _options = options;
+            SpacePotatoGame.options = options;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -28,10 +28,10 @@ namespace SpacePotato {
 
         protected override void Initialize() {
             _graphics.PreferredBackBufferWidth =
-                _options.Resolution != null ? int.Parse(_options.Resolution.Split('x')[0]) : 1280;
+                options.Resolution != null ? int.Parse(options.Resolution.Split('x')[0]) : 1280;
             _graphics.PreferredBackBufferHeight =
-                _options.Resolution != null ? int.Parse(_options.Resolution.Split('x')[1]) : 720;
-            _graphics.IsFullScreen = _options.Fullscreen && _options.Fullscreen;
+                options.Resolution != null ? int.Parse(options.Resolution.Split('x')[1]) : 720;
+            _graphics.IsFullScreen = options.Fullscreen && options.Fullscreen;
 
             _graphics.PreferMultiSampling = true;
             _graphics.GraphicsDevice.SamplerStates[0] = SamplerState.LinearWrap;

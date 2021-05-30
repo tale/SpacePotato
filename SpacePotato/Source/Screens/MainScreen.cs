@@ -13,7 +13,6 @@ namespace SpacePotato {
         // Static player instance
         private static Player _player;
         public static void RecreatePlayer() {
-
             Planet start = LevelManager.level.StartPlanet();
             Vector2 startPos = start == null ? new Vector2(0, 0) : start.pos + (start.radius + 100) * Vector2.UnitX;
             _player = new Player(startPos);

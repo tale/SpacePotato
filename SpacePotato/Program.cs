@@ -13,8 +13,6 @@ namespace SpacePotato {
             Parser.Default.ParseArguments<Options>(args).WithParsed(options => {
                 var title = Assembly.GetExecutingAssembly().GetName().Name;
                 var version = Assembly.GetExecutingAssembly().GetName().Version;
-                var copyright = GetAssemblyAttribute<AssemblyCopyrightAttribute>(a => a.Copyright);
-                var company = GetAssemblyAttribute<AssemblyCompanyAttribute>(a => a.Company);
 
                 var initialOutput = new StringBuilder();
                 initialOutput.AppendLine($"{title} {version}");
@@ -40,5 +38,9 @@ namespace SpacePotato {
         [Option("resolution", Required = false,
             HelpText = "Set the game window resolution (overriden by Fullscreen if enabled)")]
         public string Resolution { get; set; }
+        
+        [Option("godmode", Required = false,
+            HelpText = "Set the player in god mode so that they can no longer die")]
+        public bool Godmode { get; set; }
     }
 }
