@@ -14,6 +14,13 @@ sampler2D SpriteTextureSampler = sampler_state
 	Texture = <SpriteTexture>;
 };
 
+Texture2D ShadeTexture;
+sampler2D ShadeTextureSampler = sampler_state
+{
+    Texture = <ShadeTexture>;
+};
+
+
 struct VertexShaderOutput
 {
 	float4 Position : SV_POSITION;
@@ -24,8 +31,11 @@ struct VertexShaderOutput
 float4 MainPS(VertexShaderOutput input) : COLOR
 {
     float4 color = tex2D(SpriteTextureSampler, input.TextureCoordinates) * input.Color;
-    float4 inverted = float4(color.a - color.rgb, color.a);
-	return inverted;
+    //float4 inverted = float4(color.a - color.rgb, color.a);
+	//return inverted;
+	
+    color *= tex2D(ShadeTextureSampler, input.TextureCoordinates);
+    return color;
 }
 
 technique SpriteDrawing

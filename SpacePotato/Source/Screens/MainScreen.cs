@@ -53,6 +53,7 @@ namespace SpacePotato {
             particlesUnder = new ParticleSystem();
             
             planetShader = ContentManager.Load<Effect>("Shaders/Planet");
+            planetShader.Parameters["ShadeTexture"].SetValue(Textures.genPlanetShade());
         }
 
         private static float Delta(GameTime gameTime) {
@@ -121,13 +122,27 @@ namespace SpacePotato {
             spriteBatch.Begin(SpriteSortMode.Deferred,
                 BlendState.NonPremultiplied,
                 SamplerState.PointClamp,
-                transformMatrix: Camera.CalculateViewMatrix(),
-                effect: planetShader);
+                transformMatrix: Camera.CalculateViewMatrix());
 
             // rendering code
             particlesUnder.Render(spriteBatch);
-
+            spriteBatch.End();
+            
+            
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                BlendState.NonPremultiplied,
+                SamplerState.PointClamp,
+                transformMatrix: Camera.CalculateViewMatrix(),
+                effect: planetShader);
+            
             LevelManager.level.Render(gameTime, spriteBatch);
+            
+            spriteBatch.End();
+            
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                BlendState.NonPremultiplied,
+                SamplerState.PointClamp,
+                transformMatrix: Camera.CalculateViewMatrix());
 
            if (!_isRespawning)  _player.Render(spriteBatch);
 
