@@ -9,7 +9,6 @@ namespace SpacePotato{
         private Vector2 _velocity;
 
         public Vector2 Position { get; private set; }
-        
         public float Radius { get; private set; }
 
         private static Texture2D temp;
@@ -24,10 +23,8 @@ namespace SpacePotato{
             this.Radius = radius;
         }
 
-        public void Update(float gameTime) {
-
-            Position += _velocity;
-
+        public void Update(float deltaTime) {
+            Position += _velocity * deltaTime;
         }
 
         public void Render(SpriteBatch spriteBatch) {

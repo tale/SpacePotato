@@ -59,6 +59,13 @@ namespace SpacePotato {
             particlesOver.Update(deltaTime);
             particlesUnder.Update(deltaTime);
             
+            // CONTROLS ==================
+            
+            // change level
+            if (keys.pressed(Keys.Left)) LevelManager.PreviousLevel();
+            if (keys.pressed(Keys.Right)) LevelManager.NextLevel();
+            
+            // EDITOR CONTROLS
             if (keys.pressed(Keys.O)) {
                 EditMode ^= true;
             }
