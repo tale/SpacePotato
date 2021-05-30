@@ -43,14 +43,14 @@ namespace SpacePotato {
             }
 
             if (_invincibilityTime < 0 && !SpacePotatoGame.options.Godmode) {
-                hurt(Util.angle(pos - planet.pos), subtractLives);
+                Hurt(planet, Util.angle(pos - planet.pos), subtractLives);
             }
             
             float velMag = Util.mag(vel);
             vel = Util.polar(Math.Max(velMag * 0.6F, 300), Util.angle(pos - planet.pos));
         }
 
-        public void hurt(float angle, short subtractLives = 1) {
+        public void Hurt(Planet planet, float angle, short subtractLives = 1) {
             _health -= subtractLives;
             _grapple = null;
             _invincibilityTime = maxInvincibilityTime;
@@ -60,10 +60,21 @@ namespace SpacePotato {
                 MainScreen.RecreatePlayer(true);
             }
 
-            int particleCount = Util.randInt(10, 20);
-            for (int i = 0; i < particleCount; i++) {
-                MainScreen.particlesOver.Add(new HurtParticle(Util.randomIn(pos, dimen), 
-                    Util.polar(Util.random(0.4F, 1F) * Util.mag(vel), angle + Maths.PI + Util.randomPN(Maths.PI * 0.35F))));
+            if (planet.GetType() != "Blackhole") {
+                int particleCount = Util.randInt(10, 20);
+                for (int i = 0; i < particleCount; i++) {
+                    if (planet.GetType() == "Star")
+                        MainScreen.particlesOver.Add(new FireParticle(Util.randomIn(pos, dimen),
+                            Util.polar(Util.random(0.4F, 1F) * Util.mag(vel),
+                                angle + Maths.PI + Util.randomPN(Maths.PI * 0.35F))));
+                    else
+                        MainScreen.particlesOver.Add(new HurtParticle(Util.randomIn(pos, dimen),
+                            Util.polar(Util.random(0.4F, 1F) * Util.mag(vel),
+                                angle + Maths.PI + Util.randomPN(Maths.PI * 0.35F))));
+                }
+            }
+            else {
+                //TODO gilberize player
             }
         }
 
