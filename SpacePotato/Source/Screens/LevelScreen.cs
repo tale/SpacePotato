@@ -32,10 +32,11 @@ namespace SpacePotato {
             }
 
             const int cols = 3;
-            for (short i = 0; i < LevelManager._levels.Length; i++) {
+            for (short i = 0; i < LevelManager._levels.Length - 1; i++) {
                 int col = i % cols;
                 int row = i / cols;
-                uiElements.Add(new UIButton(Func(i), new Vector2(Camera.screenCenter.X + (col - (cols - 1) / 2F) * 120, 100 + row * 120), Vector2.One * 100, $"Level {i+1}"));
+                uiElements.Add(new UIButton(Func((short) (i + 1)), new Vector2(Camera.screenCenter.X + (col - (cols - 1) / 2F) * 120, 100 + row * 120), 
+                    Vector2.One * 100, $"Level {i+1}"));
             }
         }
 

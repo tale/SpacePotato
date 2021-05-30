@@ -18,7 +18,10 @@ namespace SpacePotato {
             potato = Loader.texture("Common/Potato");
 
             uiElements = new List<UIElement> {
-                new UIButton(() => ScreenManager.SwitchScreen(1), Camera.screenDimen * 0.5F, new Vector2(200, 70), "Start") {
+                new UIButton(() => {
+                    LevelManager.SetLevel(1);
+                    ScreenManager.SwitchScreen(1);
+                }, Camera.screenDimen * 0.5F, new Vector2(200, 70), "Start") {
                     color = Color.Lerp(Color.White, Color.Black, 0.9F),
                 },
                 new UIButton(() => ScreenManager.SwitchScreen(3), Camera.screenDimen * 0.5F + Vector2.UnitY * 90, new Vector2(200, 70), "Levels") {
