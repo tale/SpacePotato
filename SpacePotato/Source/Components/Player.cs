@@ -96,17 +96,33 @@ namespace SpacePotato {
                 if (keys.pressed(Keys.Down)) Editor.lastRadius();
 
                 if (mouse.leftPressed) {
-                    Planet planet = new Planet(worldMouse, Editor.radius);
+                    if (Editor.mode == Editor.EditorMode.Planet) {
+                        Planet planet = new Planet(worldMouse, Editor.radius);
                     
-                    if (keys.down(Keys.D1)) {
-                        planet = new Planet(worldMouse, Planet.StartEndRadius);
-                        planet.setTypeIndex(Planet.StartType);
-                    } else if (keys.down(Keys.D2)) {
-                        planet = new Planet(worldMouse, Planet.StartEndRadius);
-                        planet.setTypeIndex(Planet.EndType);
+                        if (keys.down(Keys.D1)) {
+                            planet = new Planet(worldMouse, Planet.StartEndRadius);
+                            planet.setTypeIndex(Planet.StartType);
+                        } else if (keys.down(Keys.D2)) {
+                            planet = new Planet(worldMouse, Planet.StartEndRadius);
+                            planet.setTypeIndex(Planet.EndType);
+                        }
+                    
+                        planets.Add(planet);
+                    } else {
+                        float rad = Editor.radius * 2;
+
+                        if (!Editor.hasFirstAsteroidPos) {
+                            Editor.hasFirstAsteroidPos = true;
+                            Editor.firstAsteroidPos = worldMouse;
+
+                        } else {
+                            Editor.hasFirstAsteroidPos = false;
+                            
+                            var asteroidStreams = MainScreen.GetAsteroidStreams();
+                            
+                            asteroidStreams.Add(new AsteroidStream(Editor.firstAsteroidPos, worldMouse, rad));
+                        }
                     }
-                    
-                    planets.Add(planet);
                 }
 
                 if (mouse.rightDown) {
@@ -175,9 +191,16 @@ namespace SpacePotato {
             
             if (MainScreen.EditMode) {
 
+                float size = Editor.radius * 2;
+                if (Editor.mode == Editor.EditorMode.Asteroid) size *= 2;
                 Rectangle rect = Util.center(Util.toWorld(MainScreen.CurrentMouse.pos),
-                    Vector2.One * Editor.radius * 2);
+                    Vector2.One * size);
                 RenderUtil.drawRect(rect, spriteBatch, Color.Green, 3);
+
+                if (Editor.mode == Editor.EditorMode.Asteroid && Editor.hasFirstAsteroidPos) {
+                    Rectangle start = Util.center(Editor.firstAsteroidPos, Vector2.One * size);
+                    RenderUtil.drawRect(start, spriteBatch, Color.Red, 3);
+                }
             }
         }
     }

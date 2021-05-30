@@ -8,52 +8,63 @@ namespace SpacePotato {
 
         private static readonly Random Random = new Random();
         private float _asteroidCheck;
-        
-        private readonly Vector2 _spawn, _despawn;
-        private readonly float _radius, _asteroidVelocityAngle;
-        private readonly float _averageVelocity, _velocitySTD, _averageSpawnRate;
+        private float _asteroidVelocityAngle;
 
+        public Vector2 spawn { get; set; }
+        public Vector2 despawn { get; set; }
+        public float Radius { get; set; }
+        public float AverageVelocity { get; set; }
+        public float VelocityStd { get; set; }
+        public float AverageSpawnRate { get; set; }
+        
         private List<Asteroid> _asteroids = new List<Asteroid>();
         public AsteroidStream(Vector2 spawn, Vector2 despawn, float radius,
-            float averageVelocity, float velocitySTD, float averageSpawnRate) {
+            float averageVelocity = 500F, float velocitySTD = 100F, float averageSpawnRate = 1F) {
 
-            this._spawn = spawn;
-            this._despawn = despawn;
-            this._radius = radius;
-            this._averageVelocity = averageVelocity;
-            this._velocitySTD = velocitySTD;
-            this._averageSpawnRate = averageSpawnRate;
+            this.spawn = spawn;
+            this.despawn = despawn;
+            this.Radius = radius;
+            this.AverageVelocity = averageVelocity;
+            this.VelocityStd = velocitySTD;
+            this.AverageSpawnRate = averageSpawnRate;
 
-            _asteroidVelocityAngle = Util.angle(spawn - despawn);
+            _asteroidVelocityAngle = Util.angle(despawn - spawn);
+        }
+
+        public AsteroidStream() {}
+
+        public void setUpSerialized() {
+            _asteroidVelocityAngle = Util.angle(despawn - spawn);
         }
 
         public void Update(float deltaTime) {
-
+            
             _asteroidCheck += deltaTime;
 
             while (_asteroidCheck > 1) {
 
                 _asteroidCheck--;
 
-                if (Spawn() && Random.NextDouble() > _averageSpawnRate ) {
+                //if (Spawn() && Random.NextDouble() > AverageSpawnRate ) {
 
                     float angle = (float)(Random.NextDouble() * Math.PI * 2);
-                    float range = (float) (Random.NextDouble() * _radius);
-                    float velocityMagnitude = (float)(_averageVelocity + (Random.NextDouble() - .5f) * 2 * _velocitySTD);
+                    float range = (float) (Random.NextDouble() * Radius);
+                    //float velocityMagnitude = (float)(AverageVelocity + (Random.NextDouble() - .5f) * 2 * VelocityStd);
+                    float velocityMagnitude = 500;
                         
                     _asteroids.Add(new Asteroid(new Vector2(
-                        _spawn.X + (float)(range * Math.Cos(angle)), 
-                        _spawn.Y + (float)(range * Math.Sin(angle))), new Vector2(
-                        (float)(velocityMagnitude * Math.Cos(_asteroidVelocityAngle)), 
-                        (float)(velocityMagnitude * Math.Sin(_asteroidVelocityAngle))), 
+                        spawn.X + (float)(range * Math.Cos(angle)), 
+                        spawn.Y + (float)(range * Math.Sin(angle))), Util.polar(velocityMagnitude, _asteroidVelocityAngle), 
                         24));
-                }
+                //}
             }
 
             for (int n = 0; n < _asteroids.Count; n++) {
 
+                _asteroids[n].Update(deltaTime);
+                
                 if (Despawn(_asteroids[n])) {
-                    _asteroids.Remove(_asteroids[n]);
+                    _asteroids.RemoveAt(n);
                     n--;
                 }
             }
@@ -68,10 +79,7 @@ namespace SpacePotato {
 
         private bool Despawn(Asteroid asteroid) {
 
-            return Util.mag(new Vector2(
-                asteroid.pos.X - _despawn.X,
-                asteroid.pos.Y - _despawn.Y)) < 
-                   asteroid.radius + _radius;
+            return Collision.circle(asteroid.pos, asteroid.radius, despawn, Radius);
         }
 
         private bool Spawn() {
@@ -79,14 +87,14 @@ namespace SpacePotato {
             foreach (Asteroid asteroid in _asteroids) {
 
                 if (Util.mag(new Vector2(
-                        asteroid.pos.X - _despawn.X,
-                        asteroid.pos.Y - _despawn.Y)) <
-                    asteroid.radius + _radius)
-                    return true;
+                        asteroid.pos.X - despawn.X,
+                        asteroid.pos.Y - despawn.Y)) <
+                    asteroid.radius + Radius)
+                    return false;
 
             }
 
-            return false;
+            return true;
         }
     }
 }

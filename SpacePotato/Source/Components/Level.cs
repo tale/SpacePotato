@@ -9,6 +9,7 @@ namespace SpacePotato {
     public class Level {
 
         public List<Planet> Planets { get; set; }
+        public List<AsteroidStream> AsteroidStreams { get; set; }
         public Rectangle Bounds { get; set; }
         public int LevelID { get; set; }
 
@@ -19,6 +20,9 @@ namespace SpacePotato {
         public void setUpSerialized() {
             foreach (var planet in Planets) {
                 planet.setUpSerialized();
+            }
+            foreach (var asteroidStream in AsteroidStreams) {
+                asteroidStream.setUpSerialized();
             }
             Rectangle bounds2 = new Rectangle(Bounds.Left - 500, Bounds.Top - 500,
                 Bounds.Width + 500, Bounds.Height + 1000);
@@ -31,6 +35,7 @@ namespace SpacePotato {
             this.Planets = planets;
             this.Bounds = bounds;
             this.LevelID = levelID;
+            AsteroidStreams = new List<AsteroidStream>();
 
             Rectangle bounds2 = new Rectangle(bounds.Left - 500, bounds.Top - 500,
                 bounds.Width + 500, bounds.Height + 1000);
@@ -47,8 +52,10 @@ namespace SpacePotato {
             return Planets.Find(planet => planet.typeIndex == Planet.EndType);
         }
 
-        public void Update(GameTime gameTime) {
-            
+        public void Update(float deltaTime) {
+            foreach (var asteroidStream in AsteroidStreams) {
+                asteroidStream.Update(deltaTime);
+            }
         }
 
         public void Render(GameTime gameTime, SpriteBatch spriteBatch) {
@@ -58,9 +65,12 @@ namespace SpacePotato {
             _layer1.Render(spriteBatch);
             
             
-            foreach (Planet planet in Planets) {
-                
+            foreach (var planet in Planets) {
                 planet.Render(spriteBatch);
+            }
+            
+            foreach (var asteroidStream in AsteroidStreams) {
+                asteroidStream.Render(spriteBatch);
             }
             
 

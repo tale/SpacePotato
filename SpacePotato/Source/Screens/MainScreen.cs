@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using SpacePotato.Source.Editor;
 using SpacePotato.Source.Util;
 
 namespace SpacePotato {
@@ -48,6 +49,10 @@ namespace SpacePotato {
         public static List<Planet> GetPlanets() {
             return LevelManager.level.Planets;
         }
+        
+        public static List<AsteroidStream> GetAsteroidStreams() {
+            return LevelManager.level.AsteroidStreams;
+        }
 
         public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
             float deltaTime = Delta(gameTime);
@@ -61,6 +66,8 @@ namespace SpacePotato {
             particlesOver.Update(deltaTime);
             particlesUnder.Update(deltaTime);
             
+            LevelManager.level.Update(deltaTime);
+            
             // CONTROLS ==================
             
             // change level
@@ -71,6 +78,8 @@ namespace SpacePotato {
             if (keys.pressed(Keys.O)) {
                 EditMode ^= true;
             }
+            
+            if (keys.pressed(Keys.M)) Editor.toggleMode();
 
             if (keys.pressed(Keys.K)) {
                 GetPlanets().Clear();
