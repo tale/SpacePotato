@@ -80,7 +80,7 @@ namespace SpacePotato {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(Color.Black);
             
-            _screenManager.Draw(gameTime, _spriteBatch);
+            _screenManager.Render(gameTime, _spriteBatch);
             
             base.Draw(gameTime);
         }

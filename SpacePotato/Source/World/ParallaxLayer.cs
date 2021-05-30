@@ -85,10 +85,10 @@ using Microsoft.Xna.Framework.Graphics;
         }
 
 
-        public void Draw(SpriteBatch spritebatch) {
+        public void Render(SpriteBatch spritebatch) {
 
             foreach (var image in ParallaxImages) {
-                image?.Draw(spritebatch, scaler:_scaler);
+                image?.Render(spritebatch, scaler:_scaler);
             }
         }
     }

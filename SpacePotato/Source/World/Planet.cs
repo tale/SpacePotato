@@ -84,7 +84,7 @@ namespace SpacePotato {
             return new Vector2((float)(acceleration * Math.Cos(angle)), (float)(acceleration * Math.Sin(angle)));
         }
 
-        public void Draw(SpriteBatch spriteBatch) {
+        public void Render(SpriteBatch spriteBatch) {
             spriteBatch.Draw(texture, new Rectangle((int)(pos.X - radius), (int)(pos.Y - radius), (int) (radius * 2), (int) (radius * 2)), Color.White);
         }
     }

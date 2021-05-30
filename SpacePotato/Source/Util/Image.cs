@@ -20,7 +20,7 @@ namespace SpacePotato.Source.Util {
 
                 _texture = texture;
             }
-            public void Draw(SpriteBatch spriteBatch, int scaler = 1) {
+            public void Render(SpriteBatch spriteBatch, int scaler = 1) {
                 
                 int moveScalar = (scaler == 2) ? 3 : 2;
                 spriteBatch.Draw(_texture, new Rectangle(

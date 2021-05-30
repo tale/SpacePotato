@@ -25,8 +25,8 @@ namespace SpacePotato {
             if (_screens.ContainsKey(_activeScreenId)) _screens[_activeScreenId].Update(gameTime, keys, mouse);
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
-            if (_screens.ContainsKey(_activeScreenId)) _screens[_activeScreenId].Draw(gameTime, spriteBatch);
+        public void Render(GameTime gameTime, SpriteBatch spriteBatch) {
+            if (_screens.ContainsKey(_activeScreenId)) _screens[_activeScreenId].Render(gameTime, spriteBatch);
         }
     }
 }

@@ -17,7 +17,7 @@ namespace SpacePotato {
 
         public abstract void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse);
 
-        public virtual void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
+        public virtual void Render(GameTime gameTime, SpriteBatch spriteBatch) {
             spriteBatch.Begin(SpriteSortMode.Deferred,
                 BlendState.NonPremultiplied,
                 SamplerState.PointClamp);

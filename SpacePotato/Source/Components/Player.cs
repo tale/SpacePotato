@@ -24,10 +24,13 @@ namespace SpacePotato {
 
         public Vector2 lastGrav;
 
-        public Player(Vector2 pos) {
-            texture = Loader.texture("Common/image");
+        static Player() {
             heart = Loader.texture("Common/PotatoHeart");
             deadHeart = Loader.texture("Common/PotatoHeartGone");
+        }
+
+        public Player(Vector2 pos) {
+            texture = Loader.texture("Common/image");
             rot = 0F;
 
             this.pos = pos;
@@ -122,9 +125,9 @@ namespace SpacePotato {
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch) {
+        public void Render(SpriteBatch spriteBatch) {
 
-            _grapple?.Draw(spriteBatch);
+            _grapple?.Render(spriteBatch);
 
             RenderUtil.drawLine(pos, pos + lastGrav / 3, spriteBatch, Color.Lerp(Color.Green, Color.Transparent, 0.25F), 4);
 
@@ -132,10 +135,9 @@ namespace SpacePotato {
 
             for (int h = 0; h < 3; h++) {
 
-                Texture2D tempTexture = h < _health ? heart : deadHeart;
-                spriteBatch.Draw(tempTexture, new Rectangle(-530 + h * 100 + (int)Camera.Position.X, 
+                Texture2D potatoHeart = (h < _health) ? heart : deadHeart;
+                spriteBatch.Draw(potatoHeart, new Rectangle(-530 + h * 100 + (int)Camera.Position.X, 
                     -280 + (int)Camera.Position.Y, 64, 64), Color.White);
-
             }
             
             if (MainScreen.EditMode) {

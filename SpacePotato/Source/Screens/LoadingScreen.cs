@@ -19,7 +19,7 @@ namespace SpacePotato {
             var (x, _) = _titleFont.MeasureString("SpacePotato");
             var viewport = spriteBatch.GraphicsDevice.Viewport;
 
-            _spinner.Draw(gameTime, spriteBatch, new Vector2(viewport.Width - 40F, viewport.Height - 40F), 0.1F);
+            _spinner.Render(gameTime, spriteBatch, new Vector2(viewport.Width - 40F, viewport.Height - 40F), 0.1F);
             spriteBatch.DrawString(_titleFont, "SpacePotato", new Vector2(viewport.Width / 2F, viewport.Height / 4F),
                 Color.White, 0, new Vector2(x / 2, 0), Vector2.One, SpriteEffects.None, 0);
         }

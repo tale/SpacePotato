@@ -81,7 +81,7 @@ namespace SpacePotato {
             }
         }
 
-        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
+        public override void Render(GameTime gameTime, SpriteBatch spriteBatch) {
             // start
             spriteBatch.Begin(SpriteSortMode.Deferred,
                 BlendState.NonPremultiplied,
@@ -89,9 +89,9 @@ namespace SpacePotato {
                 transformMatrix: Camera.CalculateViewMatrix());
 
             // rendering code
-            _player.Draw(spriteBatch);
+            _player.Render(spriteBatch);
 
-            _levels[0].Draw(gameTime, spriteBatch);
+            _levels[0].Render(gameTime, spriteBatch);
 
             // end
             spriteBatch.End();

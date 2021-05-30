@@ -43,26 +43,19 @@ namespace SpacePotato {
             
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch) {
+        public void Render(GameTime gameTime, SpriteBatch spriteBatch) {
             
-            layer2.Draw(spriteBatch);
-            layer1.Draw(spriteBatch);
+            layer2.Render(spriteBatch);
+            layer1.Render(spriteBatch);
             
             
             foreach (Planet planet in Planets) {
                 
-                planet.Draw(spriteBatch);
+                planet.Render(spriteBatch);
             }
             
 
-            RenderUtil.drawLine(new Vector2(Bounds.Left, Bounds.Top), 
-                new Vector2(Bounds.Right, Bounds.Top), spriteBatch, Color.White, thickness:10);
-            RenderUtil.drawLine(new Vector2(Bounds.Left, Bounds.Bottom), 
-                new Vector2(Bounds.Right, Bounds.Bottom), spriteBatch, Color.White, thickness:10);
-            RenderUtil.drawLine(new Vector2(Bounds.Left, Bounds.Top), 
-                new Vector2(Bounds.Left, Bounds.Bottom), spriteBatch, Color.White, thickness:10);
-            RenderUtil.drawLine(new Vector2(Bounds.Right, Bounds.Top), 
-                new Vector2(Bounds.Right, Bounds.Bottom), spriteBatch, Color.White, thickness:10);
+            RenderUtil.drawRect(Bounds, spriteBatch, Color.White, 10);
         }
     }
 }

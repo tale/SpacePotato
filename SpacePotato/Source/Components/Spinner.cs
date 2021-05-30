@@ -20,13 +20,13 @@ namespace SpacePotato {
             _rotation+= 0.1F;
         }
 
-        public void Draw(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, float scale) {
+        public void Render(GameTime gameTime, SpriteBatch spriteBatch, Vector2 position, float scale) {
             _position = position;
             _scale = scale;
-            Draw(spriteBatch);
+            Render(spriteBatch);
         }
 
-        public override void Draw(SpriteBatch spriteBatch) {
+        public override void Render(SpriteBatch spriteBatch) {
             spriteBatch.Draw(_texture, _position, null, Color.White, _rotation,
                 new Vector2(_texture.Width / 2F, _texture.Height / 2F), _scale, SpriteEffects.None, 0);
         }
