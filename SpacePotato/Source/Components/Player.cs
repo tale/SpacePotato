@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Runner;
 using SpacePotato.Source.Editor;
 using SpacePotato.Source.Util;
 
@@ -38,19 +36,29 @@ namespace SpacePotato {
         }
 
         public void CollideWithPlanet(float deltaTime, Planet planet) {
+            if (_invincibilityTime < 0) {
+                hurt(Util.angle(pos - planet.pos));
+            }
+            
             float velMag = Util.mag(vel);
             vel = Util.polar(Math.Max(velMag * 0.5F, 300), Util.angle(pos - planet.pos));
+        }
 
-            if (_invincibilityTime < 0) {
-                _health--;
-                _grapple = null;
-                _invincibilityTime = maxInvincibilityTime;
+        public void hurt(float angle) {
+            _health--;
+            _grapple = null;
+            _invincibilityTime = maxInvincibilityTime;
 
-                if (_health == 0) {
-                    _health = 3;
-                    MainScreen.RecreatePlayer();
-                }
-            };
+            if (_health == 0) {
+                _health = 3;
+                MainScreen.RecreatePlayer();
+            }
+
+            int particleCount = Util.randInt(10, 20);
+            for (int i = 0; i < particleCount; i++) {
+                MainScreen.particlesOver.Add(new HurtParticle(pos + new Vector2(Util.randomPN(dimen.X/2), Util.randomPN(dimen.Y/2)), 
+                    Util.polar(Util.random(0.4F, 1F) * Util.mag(vel), angle + Maths.PI + Util.randomPN(Maths.PI * 0.35F))));
+            }
         }
 
         public Vector2 fullGrav(List<Planet> planets) {

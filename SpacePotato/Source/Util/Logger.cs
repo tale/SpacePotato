@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Runner {
+namespace SpacePotato {
     public static class Logger {
         public static void log(object str) {
             Console.WriteLine(str);

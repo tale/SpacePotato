@@ -13,16 +13,19 @@ namespace SpacePotato {
         }
 
         // basic stuff
-        public static Camera Camera { get; set; }
+        public static Camera Camera;
+        
+        // particles
+        public static ParticleSystem particlesOver, particlesUnder;
 
         // input
-        public static MouseInfo CurrentMouse { get; set; }
-        public static KeyInfo CurrentKeys { get; set; }
+        public static MouseInfo CurrentMouse;
+        public static KeyInfo CurrentKeys;
 
         // settings and booleans
-        public static bool EditMode { get; set; }
+        public static bool EditMode;
 
-        // objects
+        // level stuff
         private static Level[] _levels;
         public static Level level => _levels[_currLevel];
 
@@ -42,6 +45,9 @@ namespace SpacePotato {
             _levels = new[] {
                 new Level(level1Planets, new Rectangle(-100, -1000, 6000, 2000), 1),
             };
+
+            particlesOver = new ParticleSystem();
+            particlesUnder = new ParticleSystem();
         }
 
         private static float Delta(GameTime gameTime) {
@@ -62,6 +68,9 @@ namespace SpacePotato {
             Camera.Position = _player.pos - Camera.Origin;
 
 
+            particlesOver.Update(deltaTime);
+            particlesUnder.Update(deltaTime);
+            
             if (keys.pressed(Keys.O)) {
                 EditMode ^= true;
             }
@@ -89,10 +98,13 @@ namespace SpacePotato {
                 transformMatrix: Camera.CalculateViewMatrix());
 
             // rendering code
+            particlesUnder.Render(spriteBatch);
+            
             _player.Render(spriteBatch);
 
             _levels[0].Render(gameTime, spriteBatch);
 
+            particlesOver.Render(spriteBatch);
             // end
             spriteBatch.End();
         }

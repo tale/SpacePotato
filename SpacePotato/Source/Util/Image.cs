@@ -31,8 +31,8 @@ namespace SpacePotato.Source.Util {
 
             public static Color scalarToTint(int scalar) {
 
-                if (scalar == 2) return Color.Lerp(Color.White, Color.Black, 0.2F);
-                if (scalar == 3) return Color.Lerp(Color.White, Color.Black, 0.4F);
+                if (scalar == 2) return Color.Lerp(Color.White, Color.Black, 0.3F);
+                if (scalar == 3) return Color.Lerp(Color.White, Color.Black, 0.5F);
                 
                 return Color.White;
             }
