@@ -9,9 +9,14 @@ namespace SpacePotato {
     public class LevelManager {
         
         // Static level management
-        private static Level[] _levels;
+        public static Level[] _levels;
         private static short _currentLevel;
         public static Level level;
+
+        public static void SetLevel(short index) {
+            _currentLevel = index;
+            updateLevel();
+        }
 
         public static void NextLevel() {
             _currentLevel = (short) ((_currentLevel + 1) % _levels.Length);

@@ -17,13 +17,17 @@ namespace SpacePotato {
 
         public SpacePotatoGame(Options options) {
             _graphics = new GraphicsDeviceManager(this);
-            _screenManager = new ScreenManager(this, 1);
+            _screenManager = new ScreenManager(this, 2);
             
             SpacePotatoGame.options = options;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
             instance = this;
+        }
+
+        public static void ExitGame() {
+            instance.Exit();
         }
 
         protected override void Initialize() {
@@ -42,6 +46,8 @@ namespace SpacePotato {
             _screenManager.RegisterScreen(new DebugScreen(this, -1));
             _screenManager.RegisterScreen(new LoadingScreen(this, 0));
             _screenManager.RegisterScreen(new MainScreen(this, 1));
+            _screenManager.RegisterScreen(new TitleScreen(this, 2));
+            _screenManager.RegisterScreen(new LevelScreen(this, 3));
 
             base.Initialize();
         }

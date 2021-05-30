@@ -8,17 +8,20 @@ namespace SpacePotato {
         private readonly Dictionary<int, GameScreen> _screens = new Dictionary<int, GameScreen>();
         private int _activeScreenId;
 
+        public static ScreenManager instance;
+
         public ScreenManager(Game game, int initialScreenId) {
             _activeScreenId = initialScreenId;
             _game = game;
+            instance = this;
         }
 
         public void RegisterScreen(GameScreen screen) {
             _screens.Add(screen.ScreenId, screen);
         }
 
-        public void SwitchScreen(int screenId) {
-            _activeScreenId = screenId;
+        public static void SwitchScreen(int screenId) {
+            instance._activeScreenId = screenId;
         }
 
         public void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
