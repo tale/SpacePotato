@@ -10,27 +10,27 @@ namespace SpacePotato {
         
         // Static level management
         private static Level[] _levels;
-        private static short _currentLevel;
+        public static short CurrentLevel = 1;
         public static Level level;
 
         public static void NextLevel() {
-            _currentLevel = (short) ((_currentLevel + 1) % _levels.Length);
+            CurrentLevel = (short) ((CurrentLevel + 1) % _levels.Length);
             updateLevel();
         }
 
         public static void PreviousLevel() {
-            _currentLevel--;
-            if (_currentLevel == -1) _currentLevel = (short) (_levels.Length - 1);
+            CurrentLevel--;
+            if (CurrentLevel == -1) CurrentLevel = (short) (_levels.Length - 1);
             updateLevel();
         }
 
         public static void ResetLevel() {
-            _currentLevel = 0;
+            CurrentLevel = 0;
             updateLevel();
         }
 
         public static void updateLevel() {
-            level = _levels[_currentLevel];
+            level = _levels[CurrentLevel];
             MainScreen.RecreatePlayer();
         }
 
@@ -66,7 +66,7 @@ namespace SpacePotato {
                 _levels[i].setUpSerialized();
             }
 
-            level = _levels[_currentLevel];
+            level = _levels[CurrentLevel];
         }
     }
 }
