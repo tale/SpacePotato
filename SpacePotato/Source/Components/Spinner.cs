@@ -11,7 +11,7 @@ namespace SpacePotato {
         private float _scale;
 
         public Spinner(ContentManager manager) {
-            _texture = manager.Load<Texture2D>("Images/Common/mars_planet");
+            _texture = manager.Load<Texture2D>("Images/Common/Spinner");
             _rotation = 0F;
         }
 

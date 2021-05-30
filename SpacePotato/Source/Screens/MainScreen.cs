@@ -163,10 +163,10 @@ namespace SpacePotato {
             
 
             particlesOver.Render(spriteBatch);
+            spriteBatch.End();
+
             
             _player.RenderUI(spriteBatch);
-            // end
-            spriteBatch.End();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace SpacePotato{
         private static Texture2D texture;
 
         static Asteroid() {
-            texture = Loader.texture("Common/mars_planet");
+            texture = Loader.texture("Common/Asteroid");
         }
         public Asteroid(Vector2 position, Vector2 vel, float radius) {
 

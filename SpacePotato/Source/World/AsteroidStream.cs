@@ -57,7 +57,7 @@ namespace SpacePotato {
                     Asteroids.Add(new Asteroid(new Vector2(
                         spawn.X + (float)(range * Math.Cos(angle)), 
                         spawn.Y + (float)(range * Math.Sin(angle))), Util.polar(velocityMagnitude, _asteroidVelocityAngle), 
-                        24));
+                        Util.random(32, 64)));
                 //}
             }
 

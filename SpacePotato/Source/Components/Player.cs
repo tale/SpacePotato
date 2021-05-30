@@ -319,12 +319,19 @@ namespace SpacePotato {
         }
 
         public void RenderUI(SpriteBatch spriteBatch) {
+            
+            spriteBatch.Begin(SpriteSortMode.Deferred,
+                BlendState.NonPremultiplied,
+                SamplerState.PointClamp);
+            
             for (int h = 0; h < 3; h++) {
 
                 Texture2D potatoHeart = (h < health) ? heart : deadHeart;
-                spriteBatch.Draw(potatoHeart, new Rectangle(-530 + h * 100 + (int)Camera.Position.X, 
-                    -280 + (int)Camera.Position.Y, 64, 64), Color.White);
+                spriteBatch.Draw(potatoHeart, new Rectangle(30 + h * 100, 
+                    10, 64, 64), Color.White);
             }
+            
+            spriteBatch.End();
         }
     }
 }
