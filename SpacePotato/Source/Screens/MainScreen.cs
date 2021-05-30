@@ -39,6 +39,9 @@ namespace SpacePotato {
 
         // settings and booleans
         public static bool EditMode;
+        
+        // shaders
+        public static Effect planetShader;
 
         public MainScreen(Game game, int screenId) : base(game, screenId) {
             LevelManager.LoadLevels();
@@ -48,6 +51,8 @@ namespace SpacePotato {
             
             particlesOver = new ParticleSystem();
             particlesUnder = new ParticleSystem();
+            
+            planetShader = ContentManager.Load<Effect>("Shaders/Planet");
         }
 
         private static float Delta(GameTime gameTime) {
@@ -116,7 +121,8 @@ namespace SpacePotato {
             spriteBatch.Begin(SpriteSortMode.Deferred,
                 BlendState.NonPremultiplied,
                 SamplerState.PointClamp,
-                transformMatrix: Camera.CalculateViewMatrix());
+                transformMatrix: Camera.CalculateViewMatrix(),
+                effect: planetShader);
 
             // rendering code
             particlesUnder.Render(spriteBatch);
