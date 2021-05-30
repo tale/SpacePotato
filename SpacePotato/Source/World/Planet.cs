@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SpacePotato.Source.Util;
 
 namespace SpacePotato {
-    public class Planet {
+    public class Planet : SpatialBody {
         
         private const float GravityStrengthModifier = .065f, GravityFalloffModifier = .0083f;
 
@@ -13,9 +13,7 @@ namespace SpacePotato {
 
         [XmlIgnore]
         public Texture2D texture;
-
-        public Vector2 pos { get; set; }
-        public float radius { get; set; }
+        
         public float mass { get; set; }
         public float angle { get; set; }
         public int typeIndex { get; set; }

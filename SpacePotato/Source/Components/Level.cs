@@ -12,6 +12,8 @@ namespace SpacePotato {
         public Rectangle Bounds { get; set; }
         public int LevelID { get; set; }
 
+        public Planet StartPlanet { get; set; }
+        public Planet ExitPlanet { get; set; }
 
         private ParallaxLayer _layer1, _layer2, _starLayer;
 
