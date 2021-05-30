@@ -53,7 +53,7 @@ namespace SpacePotato {
             };
         }
 
-        public Vector2 fullGrav(List<Planet> planets) {
+        public Vector2 FullGrav(List<Planet> planets) {
             Vector2 grav = Vector2.Zero;
 
             foreach (var planet in planets) {
@@ -98,7 +98,7 @@ namespace SpacePotato {
             else {
                 var nearPlanets = MainScreen.GetPlanets().FindAll(planet => Util.mag(pos - planet.pos) < 1000);
 
-                Vector2 grav = fullGrav(nearPlanets);
+                Vector2 grav = FullGrav(nearPlanets);
                 vel += grav * deltaTime;
                 if (keys.down(Keys.Space)) vel += Vector2.Normalize(grav * -1) * 1000 * deltaTime;
 
