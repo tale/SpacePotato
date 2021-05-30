@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 
 namespace SpacePotato.Source.Util {
@@ -7,7 +6,7 @@ namespace SpacePotato.Source.Util {
         // Static level management
         private static Level[] _levels;
         private static short _currentLevel;
-        public static Level Level;
+        public static Level level;
 
         public static void NextLevel() {
             _currentLevel++;
@@ -29,7 +28,7 @@ namespace SpacePotato.Source.Util {
                 _levels[i].setUpSerialized();
             }
 
-            Level = _levels[_currentLevel];
+            level = _levels[_currentLevel];
         }
     }
 }

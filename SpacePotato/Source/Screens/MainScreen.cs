@@ -43,7 +43,7 @@ namespace SpacePotato {
         }
 
         public static List<Planet> GetPlanets() {
-            return LevelManager.Level.Planets;
+            return LevelManager.level.Planets;
         }
 
         public override void Update(GameTime gameTime, KeyInfo keys, MouseInfo mouse) {
@@ -69,7 +69,7 @@ namespace SpacePotato {
 
             if (keys.pressed(Keys.P)) {
                 int ID = Util.randInt(100, 10000);
-                DataSerializer.Serialize($"LevelFileTest", new Level(GetPlanets(), LevelManager.Level.Bounds, ID));
+                DataSerializer.Serialize($"LevelFileTest", new Level(GetPlanets(), LevelManager.level.Bounds, ID));
             }
         }
 
@@ -85,7 +85,7 @@ namespace SpacePotato {
             
             _player.Render(spriteBatch);
 
-            LevelManager.Level.Render(gameTime, spriteBatch);
+            LevelManager.level.Render(gameTime, spriteBatch);
 
             particlesOver.Render(spriteBatch);
             // end
