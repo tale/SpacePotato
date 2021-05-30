@@ -14,11 +14,13 @@ namespace SpacePotato {
         private static Player _player;
         private static bool _isRespawning;
         private static float _respawnTimeout;
-        private const float maxRespawnTime = 0.5F;
+        private const float maxRespawnTime = 0.8F, respawnStartTransition = 0.5F;
         public static void RecreatePlayer(bool dead = false) {
             if (dead) {
                 _player.health = 0;
                 _isRespawning = true;
+                _respawnTimeout = maxRespawnTime;
+                _player.Giblerize();
             }
             else {
                 Planet start = LevelManager.level.StartPlanet();
@@ -86,10 +88,9 @@ namespace SpacePotato {
                 if (_respawnTimeout <= 0) {
                     RecreatePlayer();
                     _isRespawning = false;
-                    _respawnTimeout = maxRespawnTime;
                 }
                 
-                float lerpVal = (maxRespawnTime - _respawnTimeout) / maxRespawnTime;
+                float lerpVal = Math.Max(0, (respawnStartTransition - _respawnTimeout) / respawnStartTransition);
                 Camera.Position = Util.sinLerp(lerpVal, _player.pos, StartPos()) - Camera.Origin;
 
             }

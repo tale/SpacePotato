@@ -62,6 +62,16 @@ namespace SpacePotato {
             stream.Asteroids.Remove(asteroid);
         }
 
+        public void Giblerize() {
+            int particleCount = 100;
+            float angle = Util.angle(vel);
+            for (int i = 0; i < particleCount; i++) {
+                MainScreen.particlesOver.Add(new HurtParticle(Util.randomIn(pos, dimen),
+                    Util.polar(Util.random(0.2F, 1F) * Util.mag(vel),
+                        angle + Util.randomPN(Maths.PI * 0.35F))));
+            }
+        }
+
         public void Hurt(Planet planet, float angle, short subtractLives = 1) {
             health -= subtractLives;
             Grapple = null;
