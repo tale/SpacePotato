@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpacePotato.Source.Editor;
@@ -23,9 +24,12 @@ namespace SpacePotato {
 
         public Vector2 lastGrav;
 
+        public static SoundEffect hitSound;
+
         static Player() {
             heart = Loader.texture("Common/PotatoHeart");
             deadHeart = Loader.texture("Common/PotatoHeartGone");
+            hitSound = Loader.sound("Hit");
         }
 
         public Player(Vector2 pos) {
@@ -73,7 +77,14 @@ namespace SpacePotato {
             }
         }
 
+        public void hurtSound() {
+            var instance = hitSound.CreateInstance();
+            instance.Play();
+        }
+
         public void Hurt(Planet planet, float angle, short subtractLives = 1) {
+            if (health != 1) hurtSound();
+            
             health -= subtractLives;
             Grapple = null;
             _invincibilityTime = maxInvincibilityTime;
@@ -102,6 +113,8 @@ namespace SpacePotato {
         }
         
         public void Hurt(Asteroid asteroid, float angle, short subtractLives = 1) {
+            hurtSound();
+            
             health -= subtractLives;
             Grapple = null;
             _invincibilityTime = maxInvincibilityTime;

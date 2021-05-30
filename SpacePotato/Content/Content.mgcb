@@ -273,3 +273,9 @@
 /processorParam:DebugMode=Auto
 /build:Shaders/Planet.fx
 
+#begin Sounds/Hit.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sounds/Hit.wav
+

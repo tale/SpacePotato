@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace SpacePotato {
     public static class Loader {
@@ -7,6 +8,10 @@ namespace SpacePotato {
         }
         public static SpriteFont font(string fontName) {
             return GameScreen.publicContentManager.Load<SpriteFont>($"Fonts/{fontName}");
+        }
+        
+        public static SoundEffect sound(string soundName) {
+            return GameScreen.publicContentManager.Load<SoundEffect>($"Sounds/{soundName}");
         }
     }
 }

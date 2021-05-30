@@ -17,6 +17,7 @@ namespace SpacePotato {
         private const float maxRespawnTime = 0.8F, respawnStartTransition = 0.5F;
         public static void RecreatePlayer(bool dead = false) {
             if (dead) {
+                _player.hurtSound();
                 _player.health = 0;
                 _isRespawning = true;
                 _respawnTimeout = maxRespawnTime;
