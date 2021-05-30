@@ -6,6 +6,8 @@ riderModule.iml
  .mgstats
 SpacePotato/Content/.mgstats
 .idea/.idea.SpacePotato/.idea/indexLayout.xml
+.idea/.idea.SpacePotato/.idea/.name
+.idea/.idea.SpacePotato/.idea/discord.xml
 
 # content below from: https://github.com/github/gitignore/blob/main/Global/macOS.gitignore
 # General
