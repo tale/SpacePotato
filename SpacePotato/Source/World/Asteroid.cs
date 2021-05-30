@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using SpacePotato.Source.Util;
 
-namespace SpacePotato.Source.World {
+namespace SpacePotato{
     public class Asteroid {
         private Vector2 _velocity;
 
