@@ -87,7 +87,7 @@ namespace SpacePotato {
         }
 
 
-        public virtual string getType() {
+        public virtual string GetType() {
             return "Planet";
         }
     }

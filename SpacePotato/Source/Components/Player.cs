@@ -152,6 +152,8 @@ namespace SpacePotato {
                 _grapple?.Update(deltaTime);
                 if (_grapple is { hit: true }) {
                     vel += Util.polar(1000, Util.angle(_grapple.pos - pos)) * deltaTime;
+                    if (_grapple.DegradeTimer < 0)
+                        _grapple = null;
                 }
 
                 lastGrav = grav;

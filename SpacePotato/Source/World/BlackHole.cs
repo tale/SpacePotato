@@ -23,7 +23,7 @@ namespace SpacePotato.Source.World {
         public override void Render(SpriteBatch spriteBatch) {
             spriteBatch.Draw(BlackHoleText, new Rectangle((int)(pos.X - radius), (int)(pos.Y - radius), (int) (radius * 2), (int) (radius * 2)), Color.White);
         }
-        public override string getType() {
+        public override string GetType() {
             return "Blackhole";
         }
     }
