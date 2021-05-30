@@ -69,9 +69,9 @@ namespace SpacePotato {
         private bool Despawn(Asteroid asteroid) {
 
             return Util.mag(new Vector2(
-                asteroid.Position.X - _despawn.X,
-                asteroid.Position.Y - _despawn.Y)) < 
-                   asteroid.Radius + _radius;
+                asteroid.pos.X - _despawn.X,
+                asteroid.pos.Y - _despawn.Y)) < 
+                   asteroid.radius + _radius;
         }
 
         private bool Spawn() {
@@ -79,9 +79,9 @@ namespace SpacePotato {
             foreach (Asteroid asteroid in _asteroids) {
 
                 if (Util.mag(new Vector2(
-                        asteroid.Position.X - _despawn.X,
-                        asteroid.Position.Y - _despawn.Y)) <
-                    asteroid.Radius + _radius)
+                        asteroid.pos.X - _despawn.X,
+                        asteroid.pos.Y - _despawn.Y)) <
+                    asteroid.radius + _radius)
                     return true;
 
             }

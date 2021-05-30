@@ -36,6 +36,12 @@ namespace SpacePotato {
         }
 
         public void CollideWithPlanet(float deltaTime, Planet planet) {
+
+            if (planet.typeIndex == Planet.EndType) {
+                LevelManager.NextLevel();
+                return;
+            }
+
             if (_invincibilityTime < 0) {
                 hurt(Util.angle(pos - planet.pos));
             }
@@ -90,7 +96,17 @@ namespace SpacePotato {
                 if (keys.pressed(Keys.Down)) Editor.lastRadius();
 
                 if (mouse.leftPressed) {
-                    planets.Add(new Planet(worldMouse, Editor.radius));
+                    Planet planet = new Planet(worldMouse, Editor.radius);
+                    
+                    if (keys.down(Keys.D1)) {
+                        planet = new Planet(worldMouse, Planet.StartEndRadius);
+                        planet.setTypeIndex(Planet.StartType);
+                    } else if (keys.down(Keys.D2)) {
+                        planet = new Planet(worldMouse, Planet.StartEndRadius);
+                        planet.setTypeIndex(Planet.EndType);
+                    }
+                    
+                    planets.Add(planet);
                 }
 
                 if (mouse.rightDown) {

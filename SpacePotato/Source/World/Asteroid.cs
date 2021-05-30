@@ -5,32 +5,30 @@ using Microsoft.Xna.Framework.Graphics;
 using SpacePotato.Source.Util;
 
 namespace SpacePotato{
-    public class Asteroid {
-        private Vector2 _velocity;
-
-        public Vector2 Position { get; private set; }
-        public float Radius { get; private set; }
-
+    public class Asteroid : SpatialBody {
+        public Vector2 vel;
+        
         private static Texture2D temp;
+        public bool delete;
 
         static Asteroid() {
             temp = Loader.texture("Common/mars_planet");
         }
-        public Asteroid(Vector2 position, Vector2 velocity, float radius) {
+        public Asteroid(Vector2 position, Vector2 vel, float radius) {
 
-            this.Position = position;
-            this._velocity = velocity;
-            this.Radius = radius;
+            this.pos = position;
+            this.radius = radius;
+            this.vel = vel;
         }
 
-        public void Update(float deltaTime) {
-            Position += _velocity * deltaTime;
+        public override void Update(float deltaTime) {
+            pos += vel * deltaTime;
         }
 
         public void Render(SpriteBatch spriteBatch) {
             
-            spriteBatch.Draw(temp, new Rectangle((int)(Position.X - Radius), (int)(Position.Y - Radius), 
-                (int)(Radius * 2), (int)(Radius * 2)), Color.White);
+            spriteBatch.Draw(temp, new Rectangle((int)(pos.X - radius), (int)(pos.Y - radius), 
+                (int)(Diameter), (int)(Diameter)), Color.White);
         }
     }
 }
