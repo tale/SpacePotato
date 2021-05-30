@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace SpacePotato {
     public static class Paths {
@@ -6,10 +7,7 @@ namespace SpacePotato {
         public static string solutionPath, dataPath;
 
         static Paths() {
-            string path = Path.GetFullPath("hi");
-            path = path.Replace("/", "\\");
-            solutionPath = path.Substring(0, path.IndexOf("bin\\Debug"));
-            dataPath = solutionPath + "Data\\";
+            dataPath = Path.Combine(Directory.GetParent(Environment.CurrentDirectory).Parent!.Parent!.FullName!, "Data");
         }
 
     }

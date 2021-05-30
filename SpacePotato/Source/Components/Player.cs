@@ -18,7 +18,7 @@ namespace SpacePotato {
 
         private short _health = 3;
         private float _invincibilityTime;
-        private const float maxInvincibilityTime = 0.1F;
+        private const float maxInvincibilityTime = 0.25F;
 
         public Vector2 lastGrav;
 
@@ -41,7 +41,7 @@ namespace SpacePotato {
             }
             
             float velMag = Util.mag(vel);
-            vel = Util.polar(Math.Max(velMag * 0.5F, 300), Util.angle(pos - planet.pos));
+            vel = Util.polar(Math.Max(velMag * 0.6F, 300), Util.angle(pos - planet.pos));
         }
 
         public void hurt(float angle) {
