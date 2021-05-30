@@ -7,7 +7,7 @@ using SpacePotato.Source.Util;
 namespace SpacePotato {
     public class Planet : SpatialBody {
         
-        private const float GravityStrengthModifier = .065f, GravityFalloffModifier = .0083f;
+        protected float GravityStrengthModifier = .065f, GravityFalloffModifier = .0083f;
 
         private const float PlanetMass = 10000;
 
@@ -58,7 +58,7 @@ namespace SpacePotato {
             texture = textures[typeIndex];
         }
 
-        public Vector2 Gravity(Vector2 objectPosition) {
+        public virtual Vector2 Gravity(Vector2 objectPosition) {
 
             var (x, y) = objectPosition;
 

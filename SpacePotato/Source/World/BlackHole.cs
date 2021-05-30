@@ -1,3 +1,4 @@
+using System;
 using System.Xml.Serialization;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,7 +9,7 @@ namespace SpacePotato.Source.World {
 
     public class BlackHole : Planet {
         
-        private const float BlackHoleMass = 30000;
+        private const float BlackHoleMass = 50000;
         private static readonly Texture2D BlackHoleTexture;
 
         static BlackHole() {
@@ -26,6 +27,9 @@ namespace SpacePotato.Source.World {
             this.angle = angle;
 
             typeIndex = -1;
+
+            GravityStrengthModifier = 3f;
+            GravityFalloffModifier = .1f;
         }
 
         public override void setUpSerialized() {
@@ -38,5 +42,6 @@ namespace SpacePotato.Source.World {
         public override string GetType() {
             return "Blackhole";
         }
+        
     }
 }
