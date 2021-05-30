@@ -126,10 +126,21 @@ namespace SpacePotato {
                 }
 
                 if (mouse.rightDown) {
-                    for (int i = planets.Count - 1; i >= 0; i--) {
-                        var planet = planets[i];
-                        if (Collision.pointCircle(worldMouse, planet.pos, planet.radius)) {
-                            planets.RemoveAt(i);
+                    if (Editor.mode == Editor.EditorMode.Planet) {
+                        for (int i = planets.Count - 1; i >= 0; i--) {
+                            var planet = planets[i];
+                            if (Collision.pointCircle(worldMouse, planet.pos, planet.radius)) {
+                                planets.RemoveAt(i);
+                            }
+                        }
+                    } else {
+                        var asteroidStreams = MainScreen.GetAsteroidStreams();
+                        for (int i = asteroidStreams.Count - 1; i >= 0; i--) {
+                            var asteroidStream = asteroidStreams[i];
+                            if (Collision.pointCircle(worldMouse, asteroidStream.spawn, asteroidStream.Radius) ||
+                                Collision.pointCircle(worldMouse, asteroidStream.despawn, asteroidStream.Radius)) {
+                                asteroidStreams.RemoveAt(i);
+                            }
                         }
                     }
                 }
@@ -199,9 +210,19 @@ namespace SpacePotato {
                     Vector2.One * size);
                 RenderUtil.drawRect(rect, spriteBatch, Color.Green, 3);
 
-                if (Editor.mode == Editor.EditorMode.Asteroid && Editor.hasFirstAsteroidPos) {
-                    Rectangle start = Util.center(Editor.firstAsteroidPos, Vector2.One * size);
-                    RenderUtil.drawRect(start, spriteBatch, Color.Red, 3);
+                if (Editor.mode == Editor.EditorMode.Asteroid) {
+                    if (Editor.hasFirstAsteroidPos) {
+                        Rectangle start = Util.center(Editor.firstAsteroidPos, Vector2.One * size);
+                        RenderUtil.drawRect(start, spriteBatch, Color.Red, 3);
+                    }
+
+                    var asteroidStreams = MainScreen.GetAsteroidStreams();
+                    foreach (var asteroidStream in asteroidStreams) {
+                        Rectangle spawn = Util.center(asteroidStream.spawn, Vector2.One * asteroidStream.Radius * 2);
+                        Rectangle despawn = Util.center(asteroidStream.despawn, Vector2.One * asteroidStream.Radius * 2);
+                        RenderUtil.drawRect(spawn, spriteBatch, Color.Yellow, 3);
+                        RenderUtil.drawRect(despawn, spriteBatch, Color.Orange, 3);
+                    }
                 }
             }
         }
