@@ -81,7 +81,10 @@ namespace SpacePotato {
         }
 
         public virtual void Render(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(texture, new Rectangle((int)(pos.X - radius), (int)(pos.Y - radius), (int) (Diameter), (int) (Diameter)), Color.White);
+            spriteBatch.Draw(texture,
+                new Rectangle((int) (pos.X - radius), (int) (pos.Y - radius), (int) (Diameter), (int) (Diameter)),
+                Color.White);
+        }
 
 
         public virtual string getType() {
