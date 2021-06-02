@@ -77,6 +77,10 @@ namespace SpacePotato {
                 angle %= (float)Math.PI * 2;
             }
 
+            if (GetType() == "Blackhole") {
+                Console.WriteLine(GravityStrengthModifier + " " + GravityFalloffModifier);
+            }
+
             return new Vector2((float)(acceleration * Math.Cos(angle)), (float)(acceleration * Math.Sin(angle)));
         }
 

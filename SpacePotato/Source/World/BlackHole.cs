@@ -16,7 +16,11 @@ namespace SpacePotato.Source.World {
             BlackHoleTexture = Loader.texture("Common/BlackHole");
         }
 
-        public BlackHole() {}
+        public BlackHole() {
+            
+            GravityStrengthModifier = .1f;
+            GravityFalloffModifier = .003f;
+        }
 
         public BlackHole(Vector2 pos, float radius, float mass = BlackHoleMass, float angle = 0) {
             
@@ -28,8 +32,8 @@ namespace SpacePotato.Source.World {
 
             typeIndex = -1;
 
-            GravityStrengthModifier = 3f;
-            GravityFalloffModifier = .1f;
+            GravityStrengthModifier = .1f;
+            GravityFalloffModifier = .01f;
         }
 
         public override void setUpSerialized() {

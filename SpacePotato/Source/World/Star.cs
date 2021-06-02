@@ -14,9 +14,15 @@ namespace SpacePotato.Source.World {
             StarTexture = Loader.texture("Common/Sun");
         }
 
-        public Star() {}
+        public Star() {
+            GravityStrengthModifier = .1f;
+            GravityFalloffModifier = .0083f;
+        }
 
         public Star(Vector2 pos, float radius, float mass = StarMass, float angle = 0) {
+
+            GravityStrengthModifier = .1f;
+            GravityFalloffModifier = .0083f;
             
             this.radius = radius;
             this.pos = pos;
